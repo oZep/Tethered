@@ -293,7 +293,6 @@ class Trap(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'trap', pos, size)
-        self.set_action['idle']
 
 
     def update(self, tilemap, movement=(0,0)):
@@ -322,7 +321,6 @@ class Prize(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'prize', pos, size)
-        self.set_action['idle']
 
 
     def update(self, tilemap, movement=(0,0)):
