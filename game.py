@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Enemy
+from scripts.entities import PhysicsEntity, Player, Enemy, Trap
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -113,12 +113,15 @@ class Game:
 
         # spawn the ememies
         self.enemies = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1)]):
+        self.trap = []
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
-                self.player.air_time = 0 # reset air time
-            else:
-                self.enemies.append(Enemy(self, spawner['pos'], (8, 15)))
+            elif spawner['variant'] == 1:
+                self.enemies.append(Enemy(self, spawner['pos'], (7, 15)))
+            elif spawner['variant'] == 2:
+                self.trap.append(Trap(self, spawner['pos'], (10, 7)))
+
 
 
     def run(self):
