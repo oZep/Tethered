@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Enemy, Trap, Prize
+from scripts.entities import PhysicsEntity, Player, TurrentR, TurrentL, Trap, Prize
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -126,8 +126,10 @@ class Game:
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
-                self.enemies.append(Enemy(self, spawner['pos'], (7, 15)))
-            elif spawner['variant'] == 2:
+                self.enemies.append(TurrentL(self, spawner['pos'], (7, 15)))
+            elif spawner['varient'] == 2:
+                self.enemies.append(TurrentL(self, spawner['pos'], (7, 15)))
+            elif spawner['variant'] == 3:
                 self.trap.append(Trap(self, spawner['pos'], (16, 16)))
             else:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
@@ -151,31 +153,27 @@ class Game:
                 # clear the screen for new image generation in loop
                 self.display_2.blit(self.assets['Story1'], (0,0)) # no outline
 
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
-
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
                 if self.story_timer > 0:
                     self.story_timer -= 1 
                 pygame.display.update()
                 self.clock.tick(60) # run at 60 fps, like a sleep
+            elif self.story_timer > 300:
                 self.display.fill((0, 0, 0, 0))    # outlines
                 # clear the screen for new image generation in loop
                 self.display_2.blit(self.assets['Story2'], (0,0)) # no outline
 
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
-
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 if self.story_timer > 0:
                     self.story_timer -= 1 
                 pygame.display.update()
                 self.clock.tick(60) # run at 60 fps, like a sleep
-            if self.story_timer > 300:
+            elif self.story_timer > 300:
                 self.display.fill((0, 0, 0, 0))    # outlines
                 # clear the screen for new image generation in loop
                 self.display_2.blit(self.assets['Story3'], (0,0)) # no outline
 
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
 
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
@@ -183,25 +181,21 @@ class Game:
                     self.story_timer -= 1 
                 pygame.display.update()
                 self.clock.tick(60) # run at 60 fps, like a sleep
-            if self.story_timer > 200:
+            elif self.story_timer > 200:
                 self.display.fill((0, 0, 0, 0))    # outlines
                 # clear the screen for new image generation in loop
                 self.display_2.blit(self.assets['Story4'], (0,0)) # no outline
 
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
-
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
                 if self.story_timer > 0:
                     self.story_timer -= 1 
                 pygame.display.update()
                 self.clock.tick(60) # run at 60 fps, like a sleep
-            if self.story_timer > 100:
+            elif self.story_timer > 100:
                 self.display.fill((0, 0, 0, 0))    # outlines
                 # clear the screen for new image generation in loop
                 self.display_2.blit(self.assets['Story5'], (0,0)) # no outline
-
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
 
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
@@ -215,15 +209,6 @@ class Game:
                 self.display_2.blit(self.assets['background'], (0,0)) # no outline
 
                 self.screenshake = max(0, self.screenshake-1) # resets screenshake value
-
-                # level transiition
-                if not len(self.enemies): # no enemies
-                    self.transition += 1 # start timer, increasing value past 0
-                    if self.transition > 30: 
-                        self.level = min(self.level + 1, self.max_level) # increase level
-                        self.load_level(self.level) # -1 since we start at level 0
-                if self.transition < 0:
-                    self.transition += 1 # goes up automatically until 0
 
                 if self.dead: # get hit once
                     self.dead += 1
