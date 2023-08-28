@@ -286,13 +286,13 @@ class Enemy(PhysicsEntity):
     
 
         
-class Bomb(PhysicsEntity):
+class Trap(PhysicsEntity):
     def __init__(self, game, pos, size):
         '''
         instantiates the enemies
         (game, position: tuple, size)
         '''
-        super().__init__(game, 'bomb', pos, size)
+        super().__init__(game, 'Trap', pos, size)
 
 
     def update(self, tilemap, movement=(0,0)):
