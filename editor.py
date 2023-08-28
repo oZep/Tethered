@@ -60,7 +60,7 @@ class Editor:
         # creating an infinite game loop
         while True:
             # clear the screen for new image generation in loop
-            self.display.fill((0,0,0))
+            self.display.fill((255,255,255))
 
             self.scroll[0] += (self.movement[1] - self.movement[0]) * 2 # camera x axis
             self.scroll[1] += (self.movement[3] - self.movement[2]) * 2 # camera y axis
@@ -70,7 +70,7 @@ class Editor:
             self.tilemap.render(self.display, offset=render_scroll)
 
             current_tile_img = self.assets[self.tile_list[self.tile_group]][self.tile_variant] # select the tile
-            current_tile_img.set_alpha(150) # partially transparent, 0 -> full, 255 -> none
+            current_tile_img.set_alpha(200) # partially transparent, 0 -> full, 255 -> none
 
             mpos = pygame.mouse.get_pos() # gets mouse positon
             mpos = (mpos[0] / RENDER_SCALE, mpos[1] / RENDER_SCALE) # since screen scales x2

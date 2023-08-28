@@ -292,7 +292,7 @@ class Trap(PhysicsEntity):
         instantiates the enemies
         (game, position: tuple, size)
         '''
-        super().__init__(game, 'Trap', pos, size)
+        super().__init__(game, 'trap', pos, size)
 
 
     def update(self, tilemap, movement=(0,0)):
@@ -314,6 +314,33 @@ class Trap(PhysicsEntity):
     def render(self, surf, offset=(0, 0)):
         super().render(surf, offset=offset)
 
+class Prize(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates the enemies
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'prize', pos, size)
+
+
+    def update(self, tilemap, movement=(0,0)):
+        if abs(self.game.player.dashing) >= 50:
+            if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
+                self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
+                self.game.sfx['hit'].play()
+                for i in range(30): # enemy death effect
+                    # on death sparks
+                    angle = random.random() * math.pi * 2 # random angle in a circle
+                    speed = random.random() * 5
+                    self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
+                    # on death particles
+                    self.game.particles.append(Particle(self.game, 'confetti', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+                self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
+                self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right
+                return True # [**]
+    
+    def render(self, surf, offset=(0, 0)):
+        super().render(surf, offset=offset)
+
 
     
-
