@@ -146,7 +146,7 @@ class Player(PhysicsEntity):
                 self.set_action('wall_slide')
 
         if not self.wall_slide: 
-            if self.air_time > 4: # in air for some time (highest priority)
+            if self.air_time > 10: # in air for some time (highest priority)
                 self.set_action('jump')
             elif movement[0] != 0: # if moving horizontally
                 self.set_action('run')
@@ -210,7 +210,6 @@ class Player(PhysicsEntity):
         elif self.jumps: # if jump = 0, returns false
             self.velocity[1] = -3
             self.jumps -= 1 # count down jumps
-            self.air_time = 5 # allows jump animation to start
             return True
     
     def dash(self):
@@ -232,34 +231,26 @@ class Enemy(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'enemy', pos, size)
-        self.walking = 0
+        self.timer = 100
+
     
     def update(self, tilemap, movement=(0,0)):
-        if self.walking:
-            if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 23)): # Enemy (self) scans out in from of him, and into the ground & checks if tile is there
-                if (self.collisions['right'] or self.collisions['left']): # if wall in front of enemy
-                    self.flip = not self.flip
-                else: # no wall
-                    movement = (movement[0] - 0.5 if self.flip else 0.5, movement[1]) # y axis movement remains the same
-            else: # nothing solid so turn enemy around
-                self.flip = not self.flip
-            self.walking = max(0, self.walking - 1) # we will get one frame where it goes to zero, where the value of self.walking = false
-            if not self.walking:
-                # calc distance btwn enemy and player
-                dis = (self.game.player.pos[0] - self.pos[0], self.game.player.pos[1] - self.pos[1])
-                if (abs(dis[1])) < 16: # y axis less then 16 pixels
-                    if (self.flip and dis[0] < 0): # player is left of enemy, and enemy is looking left
-                        self.game.sfx['shoot'].play()
-                        self.game.projectiles.append([[self.rect().centerx - 7, self.rect().centery], -1.5, 0])
-                        for i in range(4):
-                            self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5 + math.pi, 2 + random.random())) # getting pos from projectiles in it's list, facing left
-                    if (not self.flip and dis[0] > 0):
-                        self.game.projectiles.append([[self.rect().centerx + 7, self.rect().centery], 1.5, 0])
-                        for i in range(4):
-                            self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5, 2 + random.random())) # facing right
+        if self.timer > 0:
+            self.timer -= 1
 
-        elif random.random() < 0.01: # 1 in every 6.1 seconds
-            self.walking = random.randint(30, 120)
+        dis = (self.game.player.pos[0] - self.pos[0], self.game.player.pos[1] - self.pos[1])
+        if (abs(dis[1])) < 16: # y axis less then 16 pixels
+            if (self.flip and dis[0] < 0 and not self.timer): # player is left of enemy, and enemy is looking left
+                self.game.sfx['shoot'].play()
+                self.game.projectiles.append([[self.rect().centerx - 7, self.rect().centery], -1.5, 0])
+                self.timer = 100
+                for i in range(4):
+                    self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5 + math.pi, 2 + random.random())) # getting pos from projectiles in it's list, facing left
+            if (not self.flip and dis[0] > 0 and not self.timer):
+                self.timer = 100
+                self.game.projectiles.append([[self.rect().centerx + 7, self.rect().centery], 1.5, 0])
+                for i in range(4):
+                    self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5, 2 + random.random())) # facing right
 
         super().update(tilemap, movement=movement)
 
@@ -295,6 +286,34 @@ class Enemy(PhysicsEntity):
     
 
         
+class Bomb(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates the enemies
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'bomb', pos, size)
 
 
-        
+    def update(self, tilemap, movement=(0,0)):
+        if abs(self.game.player.dashing) >= 50:
+            if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
+                self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
+                self.game.sfx['hit'].play()
+                for i in range(30): # enemy death effect
+                    # on death sparks
+                    angle = random.random() * math.pi * 2 # random angle in a circle
+                    speed = random.random() * 5
+                    self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
+                    # on death particles
+                    self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+                self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
+                self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right
+                return True # [**]
+    
+    def render(self, surf, offset=(0, 0)):
+        super().render(surf, offset=offset)
+
+
+    
+

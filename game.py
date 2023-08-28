@@ -122,11 +122,11 @@ class Game:
         '''
         runs the Game
         '''
-        pygame.mixer.music.load('data/music.wav')
-        pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.play(-1)
+        #pygame.mixer.music.load('data/music.wav')
+        #pygame.mixer.music.set_volume(0.5)
+        #pygame.mixer.music.play(-1)
 
-        self.sfx['ambience'].play(-1)
+        #self.sfx['ambience'].play(-1)
 
         # creating an infinite game loop
         while True:
@@ -186,10 +186,11 @@ class Game:
             # render/spawn bullet projectiles
             # [[x, y], direction, timer]
             for projectile in self.projectiles.copy():
-                projectile[0][0] += projectile[1] 
+                projectile[0][0] += projectile[1]
                 projectile[2] += 1
                 img = self.assets['projectile']
                 self.display.blit(img, (projectile[0][0] - img.get_width() / 2 - render_scroll[0], projectile[0][1] - img.get_height() / 2 - render_scroll[1])) # spawns it the center of the projectile
+                
                 if self.tilemap.solid_check(projectile[0]): # if location is a solid tile
                     self.projectiles.remove(projectile)
                     for i in range(4):
