@@ -48,7 +48,7 @@ class Game:
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=4),
             'trap/idle': Animation(load_images('entities/trap/idle'), img_dur=1),
             'prize/idle': Animation(load_images('entities/prize/idle'), img_dur=1),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=3),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur=10),
             'player/run': Animation(load_images('entities/player/run'), img_dur=6),
             'player/jump': Animation(load_images('entities/player/jump')),
             'player/slide': Animation(load_images('entities/player/slide')),
@@ -78,7 +78,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (17, 10))
+        self.player = Player(self, (100, 100), (16, 15))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
