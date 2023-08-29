@@ -24,7 +24,7 @@ class Game:
         self.screen = pygame.display.set_mode((640,480))
 
         self.display = pygame.Surface((320, 240), pygame.SRCALPHA) # render on smaller resolution then scale it up to bigger screen
-
+        self.display_black = pygame.Surface((320, 240), pygame.SRCALPHA) # render on smaller resolution then scale it up to bigger screen
         self.display_2 = pygame.Surface((320, 240))
 
         self.clock = pygame.time.Clock()
@@ -44,8 +44,10 @@ class Game:
             'story4': load_image('Story4.png'),
             'story5': load_image('Story5.png'),
             'clouds': load_images('clouds'),
-            'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=6),
-            'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=4),
+            'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=8),
+            'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=8),
+            'enemy/stun': Animation(load_images('entities/enemy/stun'), img_dur=4),
+            'enemy/shoot': Animation(load_images('entities/enemy/shoot'), img_dur= 5),
             'trap/idle': Animation(load_images('entities/trap/idle'), img_dur=1),
             'prize/idle': Animation(load_images('entities/prize/idle'), img_dur=1),
             'player/idle': Animation(load_images('entities/player/idle'), img_dur=10),
@@ -123,7 +125,7 @@ class Game:
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
-                self.enemies.append(Turrent(self, spawner['pos'], (7, 15)))
+                self.enemies.append(Turrent(self, spawner['pos'], (16, 13)))
             #elif spawner['variant'] == 2:
             #    self.trap.append(Trap(self, spawner['pos'], (16, 16)))
             else:
@@ -175,7 +177,8 @@ class Game:
                 self.story_timer -= 1 
             else:
                 # clear the screen for new image generation in loop
-                self.display.blit(self.assets['background'], (0,0)) # no outline
+                self.display_black.fill((0, 0, 0, 0))    # black outlines
+                self.display_2.blit(self.assets['background'], (0,0)) # no outline
 
                 self.screenshake = max(0, self.screenshake-1) # resets screenshake value
 
@@ -209,8 +212,6 @@ class Game:
                 for enemy in self.enemies.copy():
                     kill =  enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display, offset=render_scroll)
-                    if kill: # if enemies update fn returns true [**]
-                        self.enemies.remove(enemy) 
 
                 if not self.dead:
                     # update player movement
@@ -252,6 +253,12 @@ class Game:
                     if kill:
                         self.sparks.remove(spark)
 
+                # black ouline based on display_black
+                display_mask = pygame.mask.from_surface(self.display_black)
+                display_sillhouette = display_mask.to_surface(setcolor=(0, 0, 0, 180), unsetcolor=(0, 0, 0, 0)) # 180 opaque, 0 transparent
+                self.display_2.blit(display_sillhouette, (0, 0))
+                for offset in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    self.display_2.blit(display_sillhouette, offset) # putting what we drew onframe back into display
 
                 # ouline based on display
                 display_mask = pygame.mask.from_surface(self.display)
@@ -290,15 +297,14 @@ class Game:
                             self.movement[1] = False
                         if event.key == pygame.K_w:
                             self.movement[2] = False
-
-
-                # implementing transition
-                if self.transition:
-                    transition_surf = pygame.Surface(self.display.get_size())
-                    pygame.draw.circle(transition_surf, (255, 255, 255), (self.display.get_width() // 2, self.display.get_height() // 2), (30 - abs(self.transition)) * 8) # display center of screen, 30 is the timer we chose, 30 * 8 = 180
+                
+                if self.transition == 1:
+                    transition_surf = pygame.Surface(self.display_black.get_size())
+                    pygame.draw.circle(transition_surf, (255, 255, 255), (self.display_black.get_width() // 2, self.display_black.get_height() // 2), (30 - abs(self.transition)) * 8) # display center of screen, 30 is the timer we chose, 30 * 8 = 180
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
                     self.display_2.blit(transition_surf, (0, 0))
-
+                    
+                self.display_2.blit(self.display_black, (0, 0)) # black 
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen

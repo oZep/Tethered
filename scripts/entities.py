@@ -233,6 +233,7 @@ class Turrent(PhysicsEntity):
         super().__init__(game, 'enemy', pos, size)
         self.timer = 100
         self.walking =0
+        self.shoot_anim = 0
 
     
     def update(self, tilemap, movement=(0,0)):
@@ -251,15 +252,19 @@ class Turrent(PhysicsEntity):
             self.walking = max(0, self.walking - 1)
             if not self.walking:
                 dis = (self.game.player.pos[0] - self.pos[0], self.game.player.pos[1] - self.pos[1])
-                if (abs(dis[1]) < 16):
+                if (abs(dis[1]) < 15):
                     if (self.flip and dis[0] < 0):
+                        self.set_action('shoot')
+                        self.shoot_anim = 20
                         self.game.sfx['shoot'].play()
-                        self.game.projectiles.append([[self.rect().centerx - 7, self.rect().centery], -1.5, 0])
+                        self.game.projectiles.append([[self.rect().centerx, self.rect().centery], -1.5, 0])
                         for i in range(4):
                             self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5 + math.pi, 2 + random.random()))
                     if (not self.flip and dis[0] > 0):
+                        self.set_action('shoot')
+                        self.shoot_anim = 20
                         self.game.sfx['shoot'].play()
-                        self.game.projectiles.append([[self.rect().centerx + 7, self.rect().centery], 1.5, 0])
+                        self.game.projectiles.append([[self.rect().centerx, self.rect().centery], 1.5, 0])
                         for i in range(4):
                             self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5, 2 + random.random()))
        
@@ -268,10 +273,16 @@ class Turrent(PhysicsEntity):
         
         super().update(tilemap, movement=movement)
         
-        if movement[0] != 0:
-            self.set_action('run')
+        if self.shoot_anim > 0:
+            self.set_action('shoot')
         else:
-            self.set_action('idle')
+            if movement[0] != 0 and not self.shoot_anim:
+                self.set_action('run')
+            else:
+                self.set_action('idle')
+        
+        if self.shoot_anim > 0:
+            self.shoot_anim -= 1
             
         if abs(self.game.player.dashing) >= 50:
             if self.rect().colliderect(self.game.player.rect()):
@@ -284,16 +295,8 @@ class Turrent(PhysicsEntity):
                     self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle + math.pi) * speed * 0.5], frame=random.randint(0, 7)))
                 self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random()))
                 self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random()))
-                return True
-            
-    def render(self, surf, offset=(0, 0)):
-        super().render(surf, offset=offset)
-        
-        if self.flip:
-            surf.blit(pygame.transform.flip(self.game.assets['gun'], True, False), (self.rect().centerx - 4 - self.game.assets['gun'].get_width() - offset[0], self.rect().centery - offset[1]))
-        else:
-            surf.blit(self.game.assets['gun'], (self.rect().centerx + 4 - offset[0], self.rect().centery - offset[1]))
-
+                self.set_action['stun']
+                self.walking = random.randint(60, 180) # reset walking timer bigger timer
 
         
 class Trap(PhysicsEntity):
