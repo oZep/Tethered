@@ -28,13 +28,13 @@ class Clouds:
     '''
     stores all the clouds
     '''
-    def __init__(self, cloud_images, count=16):
+    def __init__(self, cloud_images, count=10):
         '''
         initializes the cloud collection
         '''
         self.clouds = []
         for i in range(count): # generates all the clouds
-            self.clouds.append(Cloud((random.random() * 99999, random.random() * 99999), random.choice(cloud_images), random.random() * 0.05 + 0.05, random.random() * 0.6 + 0.2))
+            self.clouds.append(Cloud((random.random() * 99999 * 2, random.random() * 99999), random.choice(cloud_images), random.random() * 0.05 + 0.05 * 2, random.random() * 0.6 + 0.2))
 
         self.clouds.sort(key= lambda x: x.depth) # telling python to sort the objects by depth, ones at deepest level loads first -> behind other clouds
 

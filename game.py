@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, TurrentR, TurrentL, Trap, Prize
+from scripts.entities import PhysicsEntity, Player, Turrent, Trap, Prize
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -75,10 +75,10 @@ class Game:
         self.sfx['dash'].set_volume(0.3)
         self.sfx['jump'].set_volume(0.7)
 
-        self.clouds = Clouds(self.assets['clouds'], count=16)
+        self.clouds = Clouds(self.assets['clouds'], count=9)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (16, 15))
+        self.player = Player(self, (100, 100), (12, 15))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -92,7 +92,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 600
+        self.story_timer = 0 # 600
 
 
     def load_level(self, map_id):
@@ -123,10 +123,8 @@ class Game:
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
-                self.enemies.append(TurrentL(self, spawner['pos'], (7, 15)))
-            elif spawner['variant'] == 2:
-                self.enemies.append(TurrentL(self, spawner['pos'], (7, 15)))
-            #elif spawner['variant'] == 3:
+                self.enemies.append(Turrent(self, spawner['pos'], (7, 15)))
+            #elif spawner['variant'] == 2:
             #    self.trap.append(Trap(self, spawner['pos'], (16, 16)))
             else:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
@@ -203,7 +201,7 @@ class Game:
                         self.particles.append(Particle(self, 'leaf', pos, velocity=[-0.1, 0.3], frame=random.randint(0, 20)))
 
                 self.clouds.update() # updates clouds before the rest of the tiles
-                self.clouds.render(self.display_2, offset=render_scroll)
+                self.clouds.render(self.display, offset=render_scroll)
 
                 self.tilemap.render(self.display, offset=render_scroll)
 
