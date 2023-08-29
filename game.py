@@ -80,7 +80,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=9)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (12, 18))
+        self.player = Player(self, (100, 100), (10, 18))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -285,7 +285,7 @@ class Game:
                             self.movement[0] = True
                         if event.key == pygame.K_d:
                             self.movement[1] = True
-                        if event.key == pygame.K_w:
+                        if event.key == pygame.K_SPACE:
                             if self.player.jump():  # velocity pointing upwards, gravity will pull player back down over time
                                 self.sfx['jump'].play()
                         if event.key == pygame.K_e:

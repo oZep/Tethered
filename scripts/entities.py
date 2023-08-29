@@ -114,6 +114,12 @@ class Player(PhysicsEntity):
         self.jumps = 1
         self.wall_slide = False
         self.dashing = 0
+    
+    def rect(self):
+        '''
+        creates a rectangle at the entitiies current postion
+        '''
+        return pygame.Rect(self.pos[0] + 6, self.pos[1], self.size[0], self.size[1])
 
     def update(self, tilemap, movement=(0,0)):
         '''
@@ -124,7 +130,7 @@ class Player(PhysicsEntity):
         self.air_time += 1
 
         # falling, falling, and well, falling
-        if self.air_time > 120:
+        if self.air_time > 300:
             if not self.game.dead:
                 self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
             self.game.dead += 1
