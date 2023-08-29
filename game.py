@@ -48,7 +48,7 @@ class Game:
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=4),
             'trap/idle': Animation(load_images('entities/trap/idle'), img_dur=1),
             'prize/idle': Animation(load_images('entities/prize/idle'), img_dur=1),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur=3),
             'player/run': Animation(load_images('entities/player/run'), img_dur=6),
             'player/jump': Animation(load_images('entities/player/jump')),
             'player/slide': Animation(load_images('entities/player/slide')),
