@@ -234,6 +234,7 @@ class Turrent(PhysicsEntity):
         self.timer = 100
         self.walking =0
         self.shoot_anim = 0
+        self.stun = 0
 
     
     def update(self, tilemap, movement=(0,0)):
@@ -241,7 +242,7 @@ class Turrent(PhysicsEntity):
             self.timer -= 1
 
     def update(self, tilemap, movement=(0, 0)):
-        if self.walking:
+        if self.walking and not self.stun:
             if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 23)):
                 if (self.collisions['right'] or self.collisions['left']):
                     self.flip = not self.flip
@@ -273,8 +274,10 @@ class Turrent(PhysicsEntity):
         
         super().update(tilemap, movement=movement)
         
-        if self.shoot_anim > 0:
+        if self.shoot_anim > 0 and not self.stun:
             self.set_action('shoot')
+        elif self.stun:
+            self.set_action('stun')
         else:
             if movement[0] != 0 and not self.shoot_anim:
                 self.set_action('run')
@@ -283,6 +286,8 @@ class Turrent(PhysicsEntity):
         
         if self.shoot_anim > 0:
             self.shoot_anim -= 1
+        if self.stun > 0:
+            self.stun -= 1
             
         if abs(self.game.player.dashing) >= 50:
             if self.rect().colliderect(self.game.player.rect()):
@@ -295,8 +300,9 @@ class Turrent(PhysicsEntity):
                     self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle + math.pi) * speed * 0.5], frame=random.randint(0, 7)))
                 self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random()))
                 self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random()))
-                self.set_action['stun']
+                self.set_action('stun')
                 self.walking = random.randint(60, 180) # reset walking timer bigger timer
+                self.stun = self.walking
 
         
 class Trap(PhysicsEntity):

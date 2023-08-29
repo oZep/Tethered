@@ -46,7 +46,7 @@ class Game:
             'clouds': load_images('clouds'),
             'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=8),
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=8),
-            'enemy/stun': Animation(load_images('entities/enemy/stun'), img_dur=4),
+            'enemy/stun': Animation(load_images('entities/enemy/stun')),
             'enemy/shoot': Animation(load_images('entities/enemy/shoot'), img_dur= 5),
             'trap/idle': Animation(load_images('entities/trap/idle'), img_dur=1),
             'prize/idle': Animation(load_images('entities/prize/idle'), img_dur=1),
@@ -80,7 +80,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=9)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (12, 15))
+        self.player = Player(self, (100, 100), (12, 18))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -210,13 +210,13 @@ class Game:
 
                 # render the enemies
                 for enemy in self.enemies.copy():
-                    kill =  enemy.update(self.tilemap, (0,0))
+                    enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display, offset=render_scroll)
 
                 if not self.dead:
                     # update player movement
                     self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
-                    self.player.render(self.display, offset=render_scroll)
+                    self.player.render(self.display_black, offset=render_scroll)
 
                 # render/spawn bullet projectiles
                 # [[x, y], direction, timer]
@@ -257,7 +257,7 @@ class Game:
                 display_mask = pygame.mask.from_surface(self.display_black)
                 display_sillhouette = display_mask.to_surface(setcolor=(0, 0, 0, 180), unsetcolor=(0, 0, 0, 0)) # 180 opaque, 0 transparent
                 self.display_2.blit(display_sillhouette, (0, 0))
-                for offset in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                for offset in [(-2, 0), (2, 0), (0, -2), (0, 2)]:
                     self.display_2.blit(display_sillhouette, offset) # putting what we drew onframe back into display
 
                 # ouline based on display
@@ -304,8 +304,8 @@ class Game:
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
                     self.display_2.blit(transition_surf, (0, 0))
                     
-                self.display_2.blit(self.display_black, (0, 0)) # black 
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
+                self.display_2.blit(self.display_black, (0, 0)) # black 
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
             pygame.display.update()
