@@ -19,7 +19,7 @@ class Game:
         pygame.init()
 
         # change the window caption
-        pygame.display.set_caption("Pok N Wack")
+        pygame.display.set_caption("Tathered")
         # create window
         self.screen = pygame.display.set_mode((640,480))
 
@@ -101,9 +101,6 @@ class Game:
         # keep track
         self.particles = []
 
-        # creating 'camera' 
-        self.scroll = [0, 0]
-
         self.dead = 0
 
         self.projectiles = []
@@ -134,6 +131,9 @@ class Game:
             else:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
 
+        # creating 'camera' 
+        self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
+
 
 
     def run(self):
@@ -151,34 +151,28 @@ class Game:
             self.display.fill((0, 0, 0, 0))    # outlines
             if self.story_timer > 0:
                 if self.story_timer > 500:
-                    # clear the screen for new image generation in loop
-                    self.display.blit(self.assets['story1'], (0,0)) # no outline
-                    print(1)
+                    self.screen.blit(self.assets['story1'], (0,0)) # no outline
 
                 elif self.story_timer > 400:
-                    self.display.fill((0, 0, 0, 0))    # outlines
-                    # clear the screen for new image generation in loop
-                    self.display.blit(self.assets['story2'], (0,0)) # no outline
-                    print(2)
+                    self.screen.blit(self.assets['story2'], (0,0)) # no outline
 
                 elif self.story_timer > 300:
-                    self.display.fill((0, 0, 0, 0))    # outlines
-                    # clear the screen for new image generation in loop
-                    self.display.blit(self.assets['story3'], (0,0)) # no outline
-                    print(3)
+                    self.screen.blit(self.assets['story3'], (0,0)) # no outline
 
-                elif self.story_timer > 200:
-                    self.display.fill((0, 0, 0, 0))    # outlines
+                elif self.story_timer > 150:
                     # clear the screen for new image generation in loop
-                    self.display.blit(self.assets['story4'], (0,0)) # no outline
-                    print(4)
-
+                    self.screen.blit(self.assets['story4'], (0,0)) # no outline
+                    text = pygame.font.SysFont('Superstar', 25).render("WHO DO YOU THINK YOU ARE HOMIE?", False, (255, 255, 255))
+                    self.screen.blit(text, (100, 400))
                 else:
-                    self.display.fill((0, 0, 0, 0))    # outlines
-                    # clear the screen for new image generation in loop
-                    self.display.blit(self.assets['story5'], (0,0)) # no outline
-                    print(5)
-
+                    self.screen.blit(self.assets['story5'], (0,0)) # no outline
+                    text = pygame.font.SysFont('Superstar', 25).render("IMMA TEACH YOU A LESSON", False, (255, 255, 255))
+                    self.screen.blit(text, (170, 400))
+                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: # have to code the window closing
+                        pygame.quit()
+                        sys.exit()
                 self.story_timer -= 1 
             else:
                 # clear the screen for new image generation in loop
@@ -307,9 +301,8 @@ class Game:
                     self.display_2.blit(transition_surf, (0, 0))
 
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
-
-            screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
-            self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
+                screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
+                self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
             pygame.display.update()
             self.clock.tick(60) # run at 60 fps, like a sleep
 
