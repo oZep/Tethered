@@ -217,6 +217,7 @@ class Game:
                     # update player movement
                     self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
                     self.player.render(self.display_black, offset=render_scroll)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0], self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
 
                 # render/spawn bullet projectiles
                 # [[x, y], direction, timer]
@@ -304,12 +305,10 @@ class Game:
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
                     self.display_2.blit(transition_surf, (0, 0))
 
-                    
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 self.display_2.blit(self.display_black, (0, 0)) # black 
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
-                pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect(), 3)
             pygame.display.update()
             self.clock.tick(60) # run at 60 fps, like a sleep
 
