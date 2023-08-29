@@ -115,11 +115,6 @@ class Player(PhysicsEntity):
         self.wall_slide = False
         self.dashing = 0
     
-    def rect(self):
-        '''
-        creates a rectangle at the entitiies current postion
-        '''
-        return pygame.Rect(self.pos[0] + 6, self.pos[1], self.size[0], self.size[1])
 
     def update(self, tilemap, movement=(0,0)):
         '''
@@ -228,6 +223,13 @@ class Player(PhysicsEntity):
                 self.dashing = -60
             else:
                 self.dashing = 60 # how long the dash is + it's direction
+
+    def rect(self):
+        '''
+        creates a rectangle at the entitiies current postion
+        '''
+        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+    
             
 
 class Turrent(PhysicsEntity):

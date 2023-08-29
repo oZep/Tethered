@@ -44,13 +44,13 @@ class Game:
             'story4': load_image('Story4.png'),
             'story5': load_image('Story5.png'),
             'clouds': load_images('clouds'),
-            'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=8),
+            'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=16),
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=8),
             'enemy/stun': Animation(load_images('entities/enemy/stun')),
             'enemy/shoot': Animation(load_images('entities/enemy/shoot'), img_dur= 5),
             'trap/idle': Animation(load_images('entities/trap/idle'), img_dur=1),
             'prize/idle': Animation(load_images('entities/prize/idle'), img_dur=1),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=10),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6) ,
             'player/run': Animation(load_images('entities/player/run'), img_dur=6),
             'player/jump': Animation(load_images('entities/player/jump')),
             'player/slide': Animation(load_images('entities/player/slide')),
@@ -77,10 +77,10 @@ class Game:
         self.sfx['dash'].set_volume(0.3)
         self.sfx['jump'].set_volume(0.7)
 
-        self.clouds = Clouds(self.assets['clouds'], count=9)
+        self.clouds = Clouds(self.assets['clouds'], count=4)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (10, 18))
+        self.player = Player(self, (100, 100), (5, 18))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -211,7 +211,7 @@ class Game:
                 # render the enemies
                 for enemy in self.enemies.copy():
                     enemy.update(self.tilemap, (0,0))
-                    enemy.render(self.display, offset=render_scroll)
+                    enemy.render(self.display_black, offset=render_scroll)
 
                 if not self.dead:
                     # update player movement
@@ -303,11 +303,13 @@ class Game:
                     pygame.draw.circle(transition_surf, (255, 255, 255), (self.display_black.get_width() // 2, self.display_black.get_height() // 2), (30 - abs(self.transition)) * 8) # display center of screen, 30 is the timer we chose, 30 * 8 = 180
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
                     self.display_2.blit(transition_surf, (0, 0))
+
                     
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 self.display_2.blit(self.display_black, (0, 0)) # black 
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
+                pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect(), 3)
             pygame.display.update()
             self.clock.tick(60) # run at 60 fps, like a sleep
 
