@@ -162,12 +162,13 @@ class Game:
                 elif self.story_timer > 150:
                     # clear the screen for new image generation in loop
                     self.screen.blit(self.assets['story4'], (0,0)) # no outline
-                    text = pygame.font.SysFont('Superstar', 25).render("WHO DO YOU THINK YOU ARE HOMIE?", False, (255, 255, 255))
-                    self.screen.blit(text, (100, 400))
+                    text = pygame.font.SysFont('FFF Forward', 300).render("WHO DO YOU THINK YOU ARE HOMIE?", True, (255, 255, 255)) # tired to get it to be less fuzzy
+                    scaled_text = pygame.transform.scale(text, (text.get_width() * 0.1, text.get_height() * 0.1))
+                    self.screen.blit(scaled_text, (self.screen.get_width()/4 - 70, 410))
                 else:
                     self.screen.blit(self.assets['story5'], (0,0)) # no outline
-                    text = pygame.font.SysFont('Superstar', 25).render("IMMA TEACH YOU A LESSON", False, (255, 255, 255))
-                    self.screen.blit(text, (170, 400))
+                    text = pygame.font.SysFont('FFF Forward', 30).render("IMMA TEACH YOU A LESSON", False, (255, 255, 255))
+                    self.screen.blit(text, (self.screen.get_width()/4 + 20, 410))
                 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT: # have to code the window closing
