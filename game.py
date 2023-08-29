@@ -164,7 +164,7 @@ class Game:
                     self.screen.blit(self.assets['story4'], (0,0)) # no outline
                     text = pygame.font.SysFont('FFF Forward', 300).render("WHO DO YOU THINK YOU ARE HOMIE?", True, (255, 255, 255)) # tired to get it to be less fuzzy
                     scaled_text = pygame.transform.scale(text, (text.get_width() * 0.1, text.get_height() * 0.1))
-                    self.screen.blit(scaled_text, (self.screen.get_width()/4 - 70, 410))
+                    self.screen.blit(scaled_text, (self.screen.get_width()/4 - 60, 410))
                 else:
                     self.screen.blit(self.assets['story5'], (0,0)) # no outline
                     text = pygame.font.SysFont('FFF Forward', 30).render("IMMA TEACH YOU A LESSON", False, (255, 255, 255))
