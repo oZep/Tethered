@@ -126,8 +126,8 @@ class Game:
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
                 self.enemies.append(Turrent(self, spawner['pos'], (16, 13)))
-            #elif spawner['variant'] == 2:
-            #    self.trap.append(Trap(self, spawner['pos'], (16, 16)))
+            elif spawner['variant'] == 2:
+                self.trap.append(Trap(self, spawner['pos'], (16, 16)))
             else:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
 
@@ -246,6 +246,30 @@ class Game:
                                 self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
                                 # on death particles
                                 self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+
+                # render the enemies
+                for enemy in self.trap.copy():
+                    kill =  enemy.update(self.tilemap, (0,0))
+                    enemy.render(self.display_black, offset=render_scroll) # change outline here
+                    if abs(self.player.dashing) < 50: # not dashing
+                        if self.player.rect().colliderect(enemy): # player collides with enemy
+                            self.dead += 1 # die
+                            self.sfx['hit'].play()
+                            self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
+                            for i in range(30): # when projectile hits player
+                                # on death sparks
+                                angle = random.random() * math.pi * 2 # random angle in a circle
+                                speed = random.random() * 5
+                                self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
+                                # on death particles
+                                self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+
+                # render the enemies
+                for enemy in self.prize.copy():
+                    kill =  enemy.update(self.tilemap, (0,0))
+                    enemy.render(self.display_black, offset=render_scroll) # change outline here
+                    # add mechanics later
+
 
                 # spark affect
                 for spark in self.sparks.copy():
