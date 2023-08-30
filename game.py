@@ -44,6 +44,7 @@ class Game:
             'story4': load_image('Story4.png'),
             'story5': load_image('Story5.png'),
             'clouds': load_images('clouds'),
+            'catnip': load_image('catnipUI.png'),
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
             'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
@@ -205,9 +206,9 @@ class Game:
                         self.particles.append(Particle(self, 'leaf', pos, velocity=[-0.1, 0.3], frame=random.randint(0, 20)))
 
                 self.clouds.update() # updates clouds before the rest of the tiles
-                self.clouds.render(self.display, offset=render_scroll)
+                self.clouds.render(self.display_black, offset=render_scroll)
 
-                self.tilemap.render(self.display, offset=render_scroll)
+                self.tilemap.render(self.display_black, offset=render_scroll)
 
                 # render the enemies
                 for enemy in self.enemies.copy():
@@ -252,6 +253,7 @@ class Game:
                 for enemy in self.trap.copy():
                     kill =  enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display_black, offset=render_scroll) # change outline here
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (enemy.pos[0] - render_scroll[0] + 7, enemy.pos[1] - render_scroll[1], enemy.size[0], enemy.size[1]), 3)
                     if abs(self.player.dashing) < 50: # not dashing
                         if self.player.rect().colliderect(enemy): # player collides with enemy
                             self.dead += 1 # die
@@ -331,8 +333,8 @@ class Game:
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
                     self.display_2.blit(transition_surf, (0, 0))
 
-                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 self.display_2.blit(self.display_black, (0, 0)) # black 
+                self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
             pygame.display.update()

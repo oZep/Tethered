@@ -194,18 +194,15 @@ class Player(PhysicsEntity):
             super().render(surf, offset=offset) # show player
 
         # rendering the hearts, we want 6 heart levels, gold heart is a shield, red is actually hit
-        hp_1 = Catnip(self.game.assets['catnip'].copy(), [250, 19], 15)
-        hp_2 = Catnip(self.game.assets['catnip'].copy(), [270, 19], 15)
-        hp_3 = Catnip(self.game.assets['catnip'].copy(), [290, 19], 15)
-        if self.hearts < 0:
-            hp_1.update()
-            hp_1.render(self.game.display_black)
-        if self.hearts < -1:
-            hp_2.update()
-            hp_2.render(self.game.display_black)
-        if self.hearts < -2:
-            hp_3.update()
-            hp_3.render(self.game.display_black)
+        cn_1 = Catnip(self.game.assets['catnip'].copy(), [250, 19], 15)
+        cn_2 = Catnip(self.game.assets['catnip'].copy(), [270, 19], 15)
+        cn_3 = Catnip(self.game.assets['catnip'].copy(), [290, 19], 15)
+        if self.catnip > 2:
+            cn_1.render(self.game.display_black)
+        if self.catnip > 1:
+            cn_2.render(self.game.display_black)
+        if self.catnip > 0:
+            cn_3.render(self.game.display_black)
 
 
 
