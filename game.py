@@ -131,7 +131,7 @@ class Game:
             elif spawner['variant'] == 1:
                 self.enemies.append(Turrent(self, spawner['pos'], (16, 13)))
             elif spawner['variant'] == 2:
-                self.trap.append(Trap(self, spawner['pos'], (16, 16)))
+                self.trap.append(Trap(self, spawner['pos'], (15, 17)))
             elif spawner['variant'] == 3:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
             else:
