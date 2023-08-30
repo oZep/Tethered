@@ -375,25 +375,21 @@ class CatnipRecharge(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'catnip', pos, size)
-        self.timer = 50
+        self.timer = 150
 
 
     def update(self, tilemap, movement=(0,0)):
-        if abs(self.game.player.dashing) >= 50:
-            if self.rect().colliderect(self.game.player.rect()) and not self.timer: # if enemy hitbox collides with player
+        if abs(self.game.player.dashing) <= 50:
+            if self.rect().colliderect(self.game.player.rect()) and not self.timer and self.game.player.catnip != 3: # if enemy hitbox collides with player
                 self.game.screenshake = max(10, self.game.screenshake)  # apply screenshake
-                self.game.player.catnip = min(3, self.game.player.catnip +1)
-                self.timer = 50
+                self.game.player.catnip = min(3, self.game.player.catnip +1) # just to be sure
+                self.timer = 150
                 for i in range(10): # enemy death effect
                     # on death sparks
                     angle = random.random() * math.pi * 2 # random angle in a circle
                     speed = random.random() * 5
                     self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
-                    # on death particles
                     self.game.particles.append(Particle(self.game, 'confetti', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
-                self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
-                self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right
-                return True # [**]
         
         if self.timer > 0:
             self.timer -= 1
