@@ -2,8 +2,8 @@ from PIL import Image
 import os
 
 # Replace with the path to your PNG images
-input_directory = 'data/images/entities/cat/stun'
-output_directory = 'data/images/entities/cat/stun_2'
+input_directory = 'data/images/entities/cat/run_2'
+output_directory = 'data/images/entities/cat/run'
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)
