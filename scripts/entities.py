@@ -325,7 +325,7 @@ class Cat(PhysicsEntity):
                 self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random()))
                 self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random()))
                 self.set_action('stun')
-                self.walking = random.randint(80, 180) # reset walking timer bigger timer
+                self.walking = random.randint(150, 240) # reset walking timer bigger timer
                 self.stun = self.walking
 
         
