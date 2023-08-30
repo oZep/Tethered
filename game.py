@@ -36,7 +36,7 @@ class Game:
             'grass': load_images('tiles/grass'),
             'large_decor': load_images('tiles/large_decor'),
             'stone': load_images('tiles/stone'),
-            'player': load_image('entities/player.png'),
+            'player': load_image('entities/player/player.png'),
             'background': load_image('background.png'),
             'story1': load_image('Story1.png'),
             'story2': load_image('Story2.png'),
