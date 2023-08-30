@@ -331,7 +331,7 @@ class Game:
                     transition_surf = pygame.Surface(self.display_black.get_size())
                     pygame.draw.circle(transition_surf, (255, 255, 255), (self.display_black.get_width() // 2, self.display_black.get_height() // 2), (30 - abs(self.transition)) * 8) # display center of screen, 30 is the timer we chose, 30 * 8 = 180
                     transition_surf.set_colorkey((255, 255, 255)) # making the circle transparent now
-                    self.display_2.blit(transition_surf, (0, 0))
+                    self.display.blit(transition_surf, (0, 0))
 
                 self.display_2.blit(self.display_black, (0, 0)) # black 
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
