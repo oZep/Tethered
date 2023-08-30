@@ -60,6 +60,7 @@ class Game:
             'enemy/run': Animation(load_images('entities/cat/run'), img_dur=8),
             'particle/leaf': Animation(load_images('particles/leaf'), img_dur=20, loop=False),
             'particle/particle': Animation(load_images('particles/particle'), img_dur=6, loop=False),
+            'particle/particle_2': Animation(load_images('particles/particle_2'), img_dur=6, loop=False),
             'particle/confetti': Animation(load_images('particles/confetti'), img_dur=3, loop=False),
             'gun': load_image('gun.png'),
             'projectile': load_image('projectile.png'),

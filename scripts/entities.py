@@ -163,7 +163,7 @@ class Player(PhysicsEntity):
                 angle = random.random() * math.pi * 2
                 speed = random.random() * 0.5 + 0.5 # random from 0.5 to 1
                 pvelocity = [math.cos(angle) * speed, math.sin(angle) * speed]
-                self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
+                self.game.particles.append(Particle(self.game, 'particle_2', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
         # dash cooldown
         if self.dashing > 0:
             self.dashing = max(0, self.dashing - 1)
@@ -177,7 +177,7 @@ class Player(PhysicsEntity):
                 self.catnip -= 1 # only happens for one frame
             # trail of particles in the middle of dash
             pvelocity = [abs(self.dashing)/self.dashing * random.random() * 3, 0] # particles move in the direction of the dash
-            self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
+            self.game.particles.append(Particle(self.game, 'particle_2', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
 
         
         # normalize horizontal vel "HORIZONTAL"
