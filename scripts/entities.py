@@ -4,6 +4,7 @@ import random
 
 from scripts.particle import Particle
 from scripts.spark import Spark
+from scripts.UI import Catnip
 
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
@@ -114,6 +115,7 @@ class Player(PhysicsEntity):
         self.jumps = 1
         self.wall_slide = False
         self.dashing = 0
+        self.catnip = 3
     
 
     def update(self, tilemap, movement=(0,0)):
@@ -168,8 +170,9 @@ class Player(PhysicsEntity):
         if self.dashing < 0:
             self.dashing = min(0, self.dashing + 1)
         # dash mechanism (only works in first 10 frames of 'dashing')
-        if abs(self.dashing) > 50:
+        if abs(self.dashing) > 50 and self.catnip > 0:
             self.velocity[0] = abs(self.dashing) / self.dashing * 8 #dash/dash gives direction which is applied to speed
+            self.catnip -= 1
             if abs(self.dashing) == 51: # slow down dash after 10 frames
                 self.velocity[0] *= 0.1
             # trail of particles in the middle of dash
@@ -189,6 +192,22 @@ class Player(PhysicsEntity):
         '''
         if abs(self.dashing) <= 50: # not in first 10 frames of dash
             super().render(surf, offset=offset) # show player
+
+        # rendering the hearts, we want 6 heart levels, gold heart is a shield, red is actually hit
+        hp_1 = Catnip(self.game.assets['catnip'].copy(), [250, 19], 15)
+        hp_2 = Catnip(self.game.assets['catnip'].copy(), [270, 19], 15)
+        hp_3 = Catnip(self.game.assets['catnip'].copy(), [290, 19], 15)
+        if self.hearts < 0:
+            hp_1.update()
+            hp_1.render(self.game.display_black)
+        if self.hearts < -1:
+            hp_2.update()
+            hp_2.render(self.game.display_black)
+        if self.hearts < -2:
+            hp_3.update()
+            hp_3.render(self.game.display_black)
+
+
 
     def jump(self):
         '''

@@ -278,6 +278,7 @@ class Game:
                     spark.render(self.display, offset=render_scroll)
                     if kill:
                         self.sparks.remove(spark)
+                
 
                 # black ouline based on display_black
                 display_mask = pygame.mask.from_surface(self.display_black)
