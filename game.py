@@ -81,7 +81,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=4)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (5, 18))
+        self.player = Player(self, (100, 100), (13, 17))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -218,7 +218,7 @@ class Game:
                     # update player movement
                     self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
                     self.player.render(self.display_black, offset=render_scroll)
-                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0], self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0] + 7, self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
 
                 # render/spawn bullet projectiles
                 # [[x, y], direction, timer]
