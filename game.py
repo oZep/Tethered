@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Turrent, Trap, Prize
+from scripts.entities import PhysicsEntity, Player, Turrent, Trap, Prize, CatnipRecharge
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -45,6 +45,7 @@ class Game:
             'story5': load_image('Story5.png'),
             'clouds': load_images('clouds'),
             'catnip': load_image('catnipUI.png'),
+            'catnip/idle': Animation(load_images('entities/catnip/catnip')),
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
             'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
@@ -123,18 +124,23 @@ class Game:
         self.enemies = []
         self.trap = []
         self.prize = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3)]):
+        self.catnip = []
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
                 self.enemies.append(Turrent(self, spawner['pos'], (16, 13)))
             elif spawner['variant'] == 2:
                 self.trap.append(Trap(self, spawner['pos'], (16, 16)))
-            else:
+            elif spawner['variant'] == 3:
                 self.prize.append(Prize(self, spawner['pos'], (17, 9)))
+            else:
+                self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
 
         # creating 'camera' 
         self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
+
+        self.player.catnip = 3
 
 
 
@@ -214,6 +220,12 @@ class Game:
                 for enemy in self.enemies.copy():
                     enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display, offset=render_scroll)
+
+                # render the enemies
+                for recharge in self.catnip.copy():
+                    recharge.update(self.tilemap, (0,0))
+                    recharge.render(self.display_black, offset=render_scroll)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (recharge.pos[0] - render_scroll[0] - 6, recharge.pos[1] - render_scroll[1], recharge.size[0], recharge.size[1]), 3)
 
                 if not self.dead:
                     # update player movement

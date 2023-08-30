@@ -172,9 +172,9 @@ class Player(PhysicsEntity):
         # dash mechanism (only works in first 10 frames of 'dashing')
         if abs(self.dashing) > 50 and self.catnip > 0:
             self.velocity[0] = abs(self.dashing) / self.dashing * 8 #dash/dash gives direction which is applied to speed
-            self.catnip -= 1
-            if abs(self.dashing) == 51: # slow down dash after 10 frames
+            if abs(self.dashing) == 51: # slow down dash after 10 frames # ==
                 self.velocity[0] *= 0.1
+                self.catnip -= 1 # only happens for one frame
             # trail of particles in the middle of dash
             pvelocity = [abs(self.dashing)/self.dashing * random.random() * 3, 0] # particles move in the direction of the dash
             self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
@@ -368,6 +368,41 @@ class Prize(PhysicsEntity):
                 return True # [**]
     
 
+class CatnipRecharge(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates the enemies
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'catnip', pos, size)
+        self.timer = 50
+
+
+    def update(self, tilemap, movement=(0,0)):
+        if abs(self.game.player.dashing) >= 50:
+            if self.rect().colliderect(self.game.player.rect()) and not self.timer: # if enemy hitbox collides with player
+                self.game.screenshake = max(10, self.game.screenshake)  # apply screenshake
+                self.game.player.catnip = min(3, self.game.player.catnip +1)
+                self.timer = 50
+                for i in range(10): # enemy death effect
+                    # on death sparks
+                    angle = random.random() * math.pi * 2 # random angle in a circle
+                    speed = random.random() * 5
+                    self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
+                    # on death particles
+                    self.game.particles.append(Particle(self.game, 'confetti', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+                self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
+                self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right
+                return True # [**]
+        
+        if self.timer > 0:
+            self.timer -= 1
+
+        def rect(self):
+            '''
+            creates a rectangle at the entitiies current postion
+            '''
+            return pygame.Rect(self.pos[0] - 6, self.pos[1], self.size[0], self.size[1])
 
 
     
