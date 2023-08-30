@@ -248,7 +248,7 @@ class Player(PhysicsEntity):
     
             
 
-class Turrent(PhysicsEntity):
+class Cat(PhysicsEntity):
     def __init__(self, game, pos, size):
         '''
         instantiates the enemies
@@ -325,7 +325,7 @@ class Turrent(PhysicsEntity):
                 self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random()))
                 self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random()))
                 self.set_action('stun')
-                self.walking = random.randint(60, 180) # reset walking timer bigger timer
+                self.walking = random.randint(80, 180) # reset walking timer bigger timer
                 self.stun = self.walking
 
         

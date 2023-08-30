@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Turrent, Trap, Prize, CatnipRecharge
+from scripts.entities import PhysicsEntity, Player, Cat, Trap, Prize, CatnipRecharge
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -130,7 +130,7 @@ class Game:
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
-                self.enemies.append(Turrent(self, spawner['pos'], (16, 13)))
+                self.enemies.append(Cat(self, spawner['pos'], (16, 13)))
             elif spawner['variant'] == 2:
                 self.trap.append(Trap(self, spawner['pos'], (15, 17)))
             elif spawner['variant'] == 3:
