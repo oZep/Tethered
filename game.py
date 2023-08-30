@@ -99,6 +99,7 @@ class Game:
         self.screenshake = 0
 
         self.story_timer = 0 # 600
+        self.bad_ending = 0
 
 
     def load_level(self, map_id):
@@ -184,6 +185,37 @@ class Game:
                         pygame.quit()
                         sys.exit()
                 self.story_timer -= 1 
+
+                if self.prize[0].dead:
+                    if self.bad_ending > 500:
+                        self.screen.blit(self.assets['story1'], (0,0)) # no outline   # change to noot noot
+
+                    elif self.bad_ending> 400:
+                        self.screen.blit(self.assets['story2'], (0,0)) # no outline
+
+                    elif self.bad_ending > 300:
+                        self.screen.blit(self.assets['story3'], (0,0)) # no outline
+
+                    elif self.bad_ending > 150:
+                        # clear the screen for new image generation in loop
+                        self.screen.blit(self.assets['story4'], (0,0)) # no outline
+
+                    else:
+                        self.screen.blit(self.assets['story5'], (0,0)) # no outline
+                    
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT: # have to code the window closing
+                            pygame.quit()
+                            sys.exit()
+                    self.bad_ending -= 1 
+
+                if self.prize[0] == 2:
+                    self.screen.blit(self.assets['story1'], (0,0)) # no outline       # change to you win! nice picture with mouses together
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT: # have to code the window closing
+                            pygame.quit()
+                            sys.exit()
+
             else:
                 # clear the screen for new image generation in loop
                 self.display_black.fill((0, 0, 0, 0))    # black outlines
@@ -350,6 +382,7 @@ class Game:
                 self.display_2.blit(self.display, (0, 0)) # cast display 2 on display
                 screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
                 self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset) # render (now scaled) display image on big screen
+
             pygame.display.update()
             self.clock.tick(60) # run at 60 fps, like a sleep
 

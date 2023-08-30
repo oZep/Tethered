@@ -349,6 +349,7 @@ class Prize(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'prize', pos, size)
+        self.dead = 0
 
 
     def update(self, tilemap, movement=(0,0)):
