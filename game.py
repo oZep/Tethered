@@ -99,7 +99,7 @@ class Game:
         self.screenshake = 0
 
         self.story_timer = 0 # 600
-        self.bad_ending = 0
+        self.bad_ending = -1 # 600
 
 
     def load_level(self, map_id):
@@ -208,6 +208,10 @@ class Game:
                             pygame.quit()
                             sys.exit()
                     self.bad_ending -= 1 
+
+                    if self.bad_ending == 0: # end game kick people out
+                        pygame.quit()
+                        sys.exit()
 
                 if self.prize[0] == 2:
                     self.screen.blit(self.assets['story1'], (0,0)) # no outline       # change to you win! nice picture with mouses together
