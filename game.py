@@ -212,7 +212,7 @@ class Game:
                 # render the enemies
                 for enemy in self.enemies.copy():
                     enemy.update(self.tilemap, (0,0))
-                    enemy.render(self.display_black, offset=render_scroll)
+                    enemy.render(self.display, offset=render_scroll)
 
                 if not self.dead:
                     # update player movement
