@@ -361,12 +361,14 @@ class Game:
 
                 self.prize[0].update(self.tilemap)
                 self.prize[0].render(self.display_2, offset=render_scroll) # render prize
-                pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
-                pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
+                # for testing
+                #pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
+                #pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
 
                 self.button[0].update(self.tilemap)
                 self.button[0].render(self.display_2, offset=render_scroll)
-                pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 7, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
+                # for testing
+                #pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 7, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
 
 
                 # spark affect
