@@ -480,4 +480,19 @@ class Turbine(PhysicsEntity):
             self.set_action('idle')
 
     
+    
+class Toy(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates 
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'toy', pos, size)
+
+    def pickup(self):
+        if not self.rect().colliderect(self.game.player.rect()):
+            pass
+        else:
+            self.game.pickup = 1
+            self.pos = self.game.player.pos
 

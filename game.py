@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Cat, Trap, Prize, CatnipRecharge, Button, Turbine
+from scripts.entities import PhysicsEntity, Player, Cat, Trap, Prize, CatnipRecharge, Button, Turbine, Toy
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -50,6 +50,7 @@ class Game:
             'clouds': load_images('clouds'),
             'catnip': load_image('catnipUI.png'),
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
+            'toy/idle': Animation(load_images('entities/toy/idle')),
             'button/idle': Animation(load_images('entities/button/idle')),
             'button/on': Animation(load_images('entities/button/on')),
             'wind/idle': Animation(load_images('entities/windturbine/idle')),
@@ -142,6 +143,7 @@ class Game:
         self.catnip = []
         self.button = []
         self.turbine= []
+        self.toy = []
         for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5), ('spawners', 6)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
@@ -155,15 +157,17 @@ class Game:
                 self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
             elif spawner['variant'] == 5:
                 self.button.append(Button(self, (spawner['pos'][0]+2, spawner['pos'][1] + 3), (8, 16)))
-            else:
+            elif spawner['variant'] == 6:
                 self.turbine.append(Turbine(self,spawner['pos'], (100, 300)))
-
-
+            else:
+                self.toy.append(Toy(self, spawner['pos'], (16, 13)))
 
         # creating 'camera' 
         self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
 
         self.player.catnip = 3
+
+        self.pickup = 0
 
 
 
@@ -375,6 +379,12 @@ class Game:
                 #pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
                 #pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
 
+                if not self.pickup:
+                    self.toy[0].update(self.tilemap, (0,0))
+                    self.toy[0].render(self.display_black, offset=render_scroll)
+                else:
+                    pass
+
                 self.button[0].update(self.tilemap)
                 self.button[0].render(self.display_2, offset=render_scroll)
                 # for testing
@@ -386,6 +396,7 @@ class Game:
                     spark.render(self.display, offset=render_scroll)
                     if kill:
                         self.sparks.remove(spark)
+                
                 
 
                 # black ouline based on display_black
@@ -425,6 +436,9 @@ class Game:
                                 self.sfx['jump'].play()
                         if event.key == pygame.K_e:
                             self.player.dash()
+                        if event.key == pygame.K_s:
+                            self.toy[0].pickup()
+                            
                     if event.type == pygame.KEYUP: # when key is released
                         if event.key == pygame.K_a: # referencing WASD
                             self.movement[0] = False
