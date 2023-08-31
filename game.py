@@ -138,7 +138,7 @@ class Game:
         self.prize = []
         self.catnip = []
         self.button = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4)]):
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
@@ -150,7 +150,7 @@ class Game:
             elif spawner['variant'] == 4:
                 self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
             else:
-                self.button.append(Button(self, spawner['pos'], (16, 16)))
+                self.button.append(Button(self, spawner['pos'], (8, 16)))
 
 
         # creating 'camera' 
