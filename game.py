@@ -74,8 +74,7 @@ class Game:
             'particle/particle': Animation(load_images('particles/particle'), img_dur=6, loop=False),
             'particle/particle_2': Animation(load_images('particles/particle_2'), img_dur=6, loop=False),
             'particle/confetti': Animation(load_images('particles/confetti'), img_dur=3, loop=False),
-            'gun': load_image('gun.png'),
-            'projectile': load_image('projectile.png'),
+            'projectile': load_image('entities/cat/projectile.png'),
         }
 
         # adding sound
@@ -409,8 +408,8 @@ class Game:
                     if kill:
                         self.sparks.remove(spark)
                 
-                    level_bar = Levelbar(self.level, pos=(self.display_red.get_width() // 2 - 25, 13))
-                    level_bar.render(self.display_black, 22)
+                level_bar = Levelbar(self.level, pos=(self.display_black.get_width() // 2 - 25, 13))
+                level_bar.render(self.display_black, 22)
 
                 # black ouline based on display_black
                 display_mask = pygame.mask.from_surface(self.display_black)
