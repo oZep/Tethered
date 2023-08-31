@@ -156,7 +156,7 @@ class Game:
             elif spawner['variant'] == 5:
                 self.button.append(Button(self, (spawner['pos'][0]+2, spawner['pos'][1] + 3), (8, 16)))
             else:
-                self.turbine.append(Turbine(self,spawner['pos'], (16, 16)))
+                self.turbine.append(Turbine(self,spawner['pos'], (100, 300)))
 
 
 
