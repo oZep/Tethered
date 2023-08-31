@@ -313,7 +313,7 @@ class Game:
                                 # on death particles
                                 self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
 
-                    if self.prize[0].rect().colliderrect(enemy): # cat hits traps, code that activates bad ending
+                    if self.prize[0].rect().colliderect(enemy): # cat hits traps, code that activates bad ending
                         self.prize[0].dead += 1
                         self.sfx['hit'].play()
                         self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
