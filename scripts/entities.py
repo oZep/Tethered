@@ -4,7 +4,7 @@ import random
 
 from scripts.particle import Particle
 from scripts.spark import Spark
-from scripts.UI import Catnip
+from scripts.UI import UI
 
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
@@ -195,9 +195,9 @@ class Player(PhysicsEntity):
             super().render(surf, offset=offset) # show player
 
         # rendering the hearts, we want 6 heart levels, gold heart is a shield, red is actually hit
-        cn_1 = Catnip(self.game.assets['catnip'].copy(), [250, 10], 15)
-        cn_2 = Catnip(self.game.assets['catnip'].copy(), [270, 10], 15)
-        cn_3 = Catnip(self.game.assets['catnip'].copy(), [290, 10], 15)
+        cn_1 = UI(self.game.assets['catnip'].copy(), [250, 10], 15)
+        cn_2 = UI(self.game.assets['catnip'].copy(), [270, 10], 15)
+        cn_3 = UI(self.game.assets['catnip'].copy(), [290, 10], 15)
         if self.catnip > 2:
             cn_1.render(self.game.display_black)
         if self.catnip > 1:
@@ -489,19 +489,28 @@ class Toy(PhysicsEntity):
         '''
         super().__init__(game, 'toy', pos, size)
 
+    def update(self, tilemap, movement=(0,0)):
+        '''
+        updates UI
+        '''
+        if self.game.pickup:
+            self.pos = (self.game.player.pos[0], self.game.player.pos[1])
+            toy = UI(self.game.assets['toy'].copy(), [13, 10], 15)
+            toy.render(self.game.display_black)
+
     def pickup(self):
+        '''
+        picks up toy
+        '''
         if not self.rect().colliderect(self.game.player.rect()):
             pass
         else:
-            self.game.pickup
-        
-        if self.game.pickup:
             self.game.pickup = 1
-            self.pos = self.game.player.pos
-            toy = Catnip(self.game.assets['toy'].copy(), [250, 10], 15)
-            toy.render(self.game.display_black)
 
     def drop(self):
+        '''
+        drops toy
+        '''
         if self.game.pickup:
             self.game.pickup = 0
 

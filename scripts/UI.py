@@ -1,7 +1,7 @@
 import pygame
 import math
 
-class Catnip:
+class UI:
     def __init__(self, img, pos, speed):
         '''
         initializing the heart

@@ -380,8 +380,8 @@ class Game:
                 #pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
                 #pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
 
-                if not self.pickup:
-                    self.toy[0].update(self.tilemap, (0,0))
+                self.toy[0].update(self.tilemap, (0,0)) # update cat toy
+                if not self.pickup: # if not picked up, render
                     self.toy[0].render(self.display_black, offset=render_scroll)
                     pygame.draw.rect(self.display_black, (255, 0, 0), (self.toy[0].pos[0] - render_scroll[0], self.toy[0].pos[1] - render_scroll[1], self.toy[0].size[0], self.toy[0].size[1]), 3)
                 else:
@@ -440,7 +440,8 @@ class Game:
                             self.player.dash()
                         if event.key == pygame.K_s:
                             self.toy[0].pickup()
-
+                        if event.key == pygame.K_f:
+                            self.toy[0].drop()
                     if event.type == pygame.KEYUP: # when key is released
                         if event.key == pygame.K_a: # referencing WASD
                             self.movement[0] = False
