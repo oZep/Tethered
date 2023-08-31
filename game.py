@@ -368,7 +368,7 @@ class Game:
                 self.button[0].update(self.tilemap)
                 self.button[0].render(self.display_2, offset=render_scroll)
                 # for testing
-                #pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 7, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
+                pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 6, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
 
 
                 # spark affect

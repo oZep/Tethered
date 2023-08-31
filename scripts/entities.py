@@ -460,7 +460,7 @@ class Button(PhysicsEntity):
         '''
         creates a rectangle at the entitiies current postion
         '''
-        return pygame.Rect(self.pos[0] + 7, self.pos[1], self.size[0], self.size[1])
+        return pygame.Rect(self.pos[0] + 6, self.pos[1], self.size[0], self.size[1])
 
     
     
