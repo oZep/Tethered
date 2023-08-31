@@ -52,6 +52,7 @@ class Game:
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
+            'prize/wind': Animation(load_images('entities/prize/wind')),
             'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
             'player/run': Animation(load_images('entities/player/run'), img_dur=6),
             'player/jump': Animation(load_images('entities/player/jump')),
@@ -148,6 +149,8 @@ class Game:
         self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
 
         self.player.catnip = 3
+
+        self.wind = 1
 
 
 
@@ -348,6 +351,7 @@ class Game:
 
                 self.prize[0].render(self.display_2, offset=render_scroll) # render prize
                 pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
+                pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
 
 
                 # spark affect

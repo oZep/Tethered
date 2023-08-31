@@ -374,12 +374,18 @@ class Prize(PhysicsEntity):
 
         if self.start and  self.game.win_delay > 0:
             self.game.win_delay -= 1
+
+        if self.game.wind:
+            self.set_action('wind')
     
     def rect(self):
         '''
         creates a rectangle at the entitiies current postion
         '''
-        return pygame.Rect(self.pos[0], self.pos[1] + 30, self.size[0], self.size[1])
+        if self.game.wind: # updated prize hit box when wind is activated
+            return pygame.Rect(self.pos[0] + 10, self.pos[1] + 90, self.size[0], self.size[1] - 60)
+        else:
+            return pygame.Rect(self.pos[0], self.pos[1] + 30, self.size[0], self.size[1])
 
 
     
