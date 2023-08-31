@@ -50,6 +50,8 @@ class Game:
             'clouds': load_images('clouds'),
             'catnip': load_image('catnipUI.png'),
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
+            'button/idle': Animation(load_images('entities/button/idle')),
+            'button/on': Animation(load_images('entities/button/on')),
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
             'prize/wind': Animation(load_images('entities/prize/wind')),
@@ -107,6 +109,8 @@ class Game:
         self.bad_ending = 1000
         self.win_delay = 100
 
+        self.wind = 0
+
 
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
@@ -149,8 +153,6 @@ class Game:
         self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
 
         self.player.catnip = 3
-
-        self.wind = 1
 
 
 

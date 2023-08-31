@@ -423,4 +423,32 @@ class CatnipRecharge(PhysicsEntity):
             return pygame.Rect(self.pos[0] - 6, self.pos[1], self.size[0], self.size[1])
 
 
+class Button(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates 
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'button', pos, size)
+        self.timer = 150
+        self.activate = 0
     
+    def update(self, tilemap, movement=(0,0)):
+        
+        if self.activate:
+            self.timer = 100
+
+                
+        if self.timer > 0:
+            self.timer -= 1
+            self.set_action('on')
+            self.game.wind = 1
+        else:
+            self.set_action('idle')
+            self.game.wind = 0
+            
+        
+        if self.timer > 0:
+            self.timer -= 1
+    
+
