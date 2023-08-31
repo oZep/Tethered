@@ -38,11 +38,14 @@ class Game:
             'stone': load_images('tiles/stone'),
             'player': load_image('entities/player/player.png'),
             'background': load_image('background.png'),
-            'story1': load_image('Story1.png'),
-            'story2': load_image('Story2.png'),
-            'story3': load_image('Story3.png'),
-            'story4': load_image('Story4.png'),
-            'story5': load_image('Story5.png'),
+            'story1': load_image('intro/Story1.png'),
+            'story2': load_image('intro/Story2.png'),
+            'story3': load_image('intro/Story3.png'),
+            'story4': load_image('intro/Story4.png'),
+            'story5': load_image('intro/Story5.png'),
+            '1': load_image('endScene/1.png'),
+            '2': load_image('endScene/2.png'),
+            '3': load_image('endScene/3.png'),
             'clouds': load_images('clouds'),
             'catnip': load_image('catnipUI.png'),
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
@@ -187,21 +190,15 @@ class Game:
                 self.story_timer -= 1 
 
                 if self.prize[0].dead:
-                    if self.bad_ending > 500:
-                        self.screen.blit(self.assets['story1'], (0,0)) # no outline   # change to noot noot
+                    if self.bad_ending > 400:
+                        self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
 
-                    elif self.bad_ending> 400:
-                        self.screen.blit(self.assets['story2'], (0,0)) # no outline
-
-                    elif self.bad_ending > 300:
-                        self.screen.blit(self.assets['story3'], (0,0)) # no outline
-
-                    elif self.bad_ending > 150:
-                        # clear the screen for new image generation in loop
-                        self.screen.blit(self.assets['story4'], (0,0)) # no outline
+                    elif self.bad_ending > 200:
+                        self.screen.blit(self.assets['2'], (0,0)) # no outline
 
                     else:
-                        self.screen.blit(self.assets['story5'], (0,0)) # no outline
+                        # clear the screen for new image generation in loop
+                        self.screen.blit(self.assets['3'], (0,0)) # no outline
                     
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT: # have to code the window closing
