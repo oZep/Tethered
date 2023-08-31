@@ -378,6 +378,8 @@ class Prize(PhysicsEntity):
 
         if self.game.wind:
             self.set_action('wind')
+        else:
+            self.set_action('idle')
     
     def rect(self):
         '''
@@ -436,12 +438,10 @@ class Button(PhysicsEntity):
     
     def update(self, tilemap, movement=(0,0)):
         
-        if self.activate:
-            self.timer = 200
-        
         # if player collides with button activate it
-        if self.rect().colliderect(self.game.player.rect()):
-            self.activate = 1
+        if self.rect().colliderect(self.game.player.rect()) or self.activate:
+            self.activate = 0
+            self.timer = 200
 
         if self.timer > 0:
             self.timer -= 1
@@ -455,5 +455,13 @@ class Button(PhysicsEntity):
         
         if self.timer > 0:
             self.timer -= 1
+
+    def rect(self):
+        '''
+        creates a rectangle at the entitiies current postion
+        '''
+        return pygame.Rect(self.pos[0] + 7, self.pos[1], self.size[0], self.size[1])
+
+    
     
 

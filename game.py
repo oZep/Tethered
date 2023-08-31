@@ -109,8 +109,6 @@ class Game:
         self.bad_ending = 1000
         self.win_delay = 100
 
-        self.wind = 0
-
 
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
@@ -119,6 +117,9 @@ class Game:
         self.particles = []
 
         self.dead = 0
+
+        # reset wind
+        self.wind = 0
 
         self.projectiles = []
         self.sparks = []
@@ -365,6 +366,7 @@ class Game:
 
                 self.button[0].update(self.tilemap)
                 self.button[0].render(self.display_2, offset=render_scroll)
+                pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 7, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
 
 
                 # spark affect
