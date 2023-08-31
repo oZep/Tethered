@@ -1,7 +1,7 @@
 # Tathered
 YUdum Dare 4 Jam Submission, Theme 'Tethered'
 August 28th 2023 at 12:00 PM to September 3rd 2023 at 11:59 PM
-I only started learning pygame 1 week ago for the start date of the jam, so it's a nice challenge to use it for a game jam
+I only started learning pygame 1 week ago from the start date of the jam, so it's a nice challenge to use it for a game jam
 
 
 Hey did you end up talking a look at the cats diet? Ever since we gave them that new brand of canned catnip they've been very.. particular with their fur. It's causing their hairballs to be especially thick and **heavy**. 
