@@ -102,7 +102,7 @@ class Game:
 
         # tracking level
         self.level = 0
-        self.max_level = len(os.listdir('data/maps')) # max level
+        self.max_level = len(os.listdir('data/maps')) - 1 # max level
         # loading the level
         self.load_level(self.level)
 
@@ -112,6 +112,7 @@ class Game:
         self.story_timer = 0 # 600
         self.bad_ending = 1000
         self.win_delay = 100
+
 
 
     def load_level(self, map_id):
@@ -231,12 +232,20 @@ class Game:
                         sys.exit()
                 self.bad_ending -= 1 
             
-            elif self.prize[0].dead == 0 and not self.win_delay:  # when prize = 0 --> win
+            elif self.prize[0].dead == 0 and not self.win_delay and self.level == self.max_level:  # when prize = 0 --> win
                 self.screen.blit(self.assets['4'], (0,0)) # no outline       # change to you win! nice picture with mouses together
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT: # have to code the window closing
                         pygame.quit()
                         sys.exit()
+
+            elif self.prize[0].dead == 0 and not self.win_delay:
+                self.transition += 1 # start timer, increasing value past 0
+                if self.transition > 30: 
+                    self.level = min(self.level + 1, self.max_level) # increase level
+                    self.load_level(self.level) # self.load_level(self.level) 
+                if self.transition < 0:
+                    self.transition += 1 # goes up automatically until 0
 
             else:
                 # clear the screen for new image generation in loop
