@@ -493,6 +493,15 @@ class Toy(PhysicsEntity):
         if not self.rect().colliderect(self.game.player.rect()):
             pass
         else:
+            self.game.pickup
+        
+        if self.game.pickup:
             self.game.pickup = 1
             self.pos = self.game.player.pos
+            toy = Catnip(self.game.assets['toy'].copy(), [250, 10], 15)
+            toy.render(self.game.display_black)
+
+    def drop(self):
+        if self.game.pickup:
+            self.game.pickup = 0
 
