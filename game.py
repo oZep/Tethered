@@ -10,6 +10,7 @@ from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
+from scripts.UI import Levelbar
 
 class Game:
     def __init__(self):
@@ -408,7 +409,8 @@ class Game:
                     if kill:
                         self.sparks.remove(spark)
                 
-                
+                    level_bar = Levelbar(self.level, pos=(self.display_red.get_width() // 2 - 25, 13))
+                    level_bar.render(self.display_black, 22)
 
                 # black ouline based on display_black
                 display_mask = pygame.mask.from_surface(self.display_black)

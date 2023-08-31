@@ -29,3 +29,21 @@ class UI:
         '''
         surf.blit(self.img, self.pos)
 
+class Levelbar:
+    def __init__(self, level, pos=[0,0]):
+        '''
+        initializing the level counter
+        (current level, position=[x,y])
+        '''
+        self.level = level
+        self.pos = pos
+    
+
+    def render(self, surf, fontsize):
+        '''
+        renders img on screen
+        (surface, font size)
+        '''
+        self.fontsize = fontsize
+        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"Level {self.level}", False, (255,255, 0))
+        surf.blit(current_level, self.pos)
