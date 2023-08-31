@@ -16,5 +16,5 @@ Jeez... mice experiments just get weirder and weirder
 
 You said you wanted to test his intelligence? Huh okay, sure. Ill just write that down and hope the board approves.
 
-Oh? It's already in motion. Great. Well, I guess I can't stop you. Be sure to watch them closely, I don't want boss to fire  
+Oh? It's already in motion. Great. Well, I guess I can't stop you. Be sure to watch them closely, as much as I don't like you I don't want boss to fire you. Imagine running this place all on my own? I would go completely insane.
 
