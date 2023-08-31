@@ -316,6 +316,20 @@ class Game:
                                 # on death particles
                                 self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
 
+                    if self.prize[0].rect().colliderrect(enemy): # cat hits traps, code that activates bad ending
+                        self.prize[0].dead += 1
+                        self.sfx['hit'].play()
+                        self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
+                        for i in range(10): # when projectile hits player
+                            # on death sparks
+                            angle = random.random() * math.pi * 2 # random angle in a circle
+                            speed = random.random() * 5
+                            self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
+                            # on death particles
+                            self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+
+
+
                 # render the enemies
                 for enemy in self.prize.copy():
                     kill =  enemy.update(self.tilemap, (0,0))
