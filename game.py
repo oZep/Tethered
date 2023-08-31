@@ -46,6 +46,7 @@ class Game:
             '1': load_image('endScene/1.png'),
             '2': load_image('endScene/2.png'),
             '3': load_image('endScene/3.png'),
+            '4': load_image('endScene/4.png'),
             'clouds': load_images('clouds'),
             'catnip': load_image('catnipUI.png'),
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
@@ -102,7 +103,8 @@ class Game:
         self.screenshake = 0
 
         self.story_timer = 0 # 600
-        self.bad_ending = -1 # 600
+        self.bad_ending = 1000
+        self.win_delay = 100
 
 
     def load_level(self, map_id):
@@ -138,7 +140,7 @@ class Game:
             elif spawner['variant'] == 2:
                 self.trap.append(Trap(self, spawner['pos'], (15, 17)))
             elif spawner['variant'] == 3:
-                self.prize.append(Prize(self, spawner['pos'], (17, 9)))
+                self.prize.append(Prize(self, spawner['pos'], (17, 100)))
             else:
                 self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
 
@@ -189,33 +191,31 @@ class Game:
                         sys.exit()
                 self.story_timer -= 1 
 
-                if self.prize[0].dead:
-                    if self.bad_ending > 400:
-                        self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
+            elif self.prize[0].dead == 1: # when prize = 1 --> Lose
+                if self.bad_ending > 700:
+                    self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
 
-                    elif self.bad_ending > 200:
-                        self.screen.blit(self.assets['2'], (0,0)) # no outline
+                elif self.bad_ending > 350:
+                    self.screen.blit(self.assets['2'], (0,0)) # no outline
+                else:
+                    # clear the screen for new image generation in loop
+                    self.screen.blit(self.assets['3'], (0,0)) # no outline
+                
+                if self.bad_ending == 0: # end game kick people out
+                    self.load_level(self.level)
 
-                    else:
-                        # clear the screen for new image generation in loop
-                        self.screen.blit(self.assets['3'], (0,0)) # no outline
-                    
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT: # have to code the window closing
-                            pygame.quit()
-                            sys.exit()
-                    self.bad_ending -= 1 
-
-                    if self.bad_ending == 0: # end game kick people out
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: # have to code the window closing
                         pygame.quit()
                         sys.exit()
-
-                if self.prize[0] == 2:
-                    self.screen.blit(self.assets['story1'], (0,0)) # no outline       # change to you win! nice picture with mouses together
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT: # have to code the window closing
-                            pygame.quit()
-                            sys.exit()
+                self.bad_ending -= 1 
+            
+            elif self.prize[0].dead == 0 and not self.win_delay:  # when prize = 0 --> win
+                self.screen.blit(self.assets['4'], (0,0)) # no outline       # change to you win! nice picture with mouses together
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: # have to code the window closing
+                        pygame.quit()
+                        sys.exit()
 
             else:
                 # clear the screen for new image generation in loop
@@ -294,6 +294,19 @@ class Game:
                                 self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
                                 # on death particles
                                 self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+                    
+                    if self.prize[0].rect().collidepoint(projectile[0]): # cat hits traps, code that activates bad ending
+                        self.prize[0].lower = 1 # lower prize
+                        self.sfx['hit'].play()
+                        self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
+                        for i in range(10): # when projectile hits player
+                            # on death sparks
+                            angle = random.random() * math.pi * 2 # random angle in a circle
+                            speed = random.random() * 5
+                            self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
+                            # on death particles
+                            self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+
 
                 # render the enemies
                 for enemy in self.trap.copy():
@@ -314,7 +327,7 @@ class Game:
                                 self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
 
                     if self.prize[0].rect().colliderect(enemy): # cat hits traps, code that activates bad ending
-                        self.prize[0].dead += 1
+                        self.prize[0].dead = True # prize dies
                         self.sfx['hit'].play()
                         self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
                         for i in range(10): # when projectile hits player
@@ -332,6 +345,9 @@ class Game:
                     kill =  enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display_black, offset=render_scroll) # change outline here
                     # add mechanics later
+
+                self.prize[0].render(self.display_2, offset=render_scroll) # render prize
+                pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
 
 
                 # spark affect

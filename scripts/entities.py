@@ -349,24 +349,39 @@ class Prize(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'prize', pos, size)
-        self.dead = 0
+        self.dead = -1
+        self.lower = 0
+        self.start = 0
 
 
     def update(self, tilemap, movement=(0,0)):
-        if abs(self.game.player.dashing) >= 50:
-            if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
-                self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
-                self.game.sfx['hit'].play()
-                for i in range(30): # enemy death effect
-                    # on death sparks
-                    angle = random.random() * math.pi * 2 # random angle in a circle
-                    speed = random.random() * 5
-                    self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
-                    # on death particles
-                    self.game.particles.append(Particle(self.game, 'confetti', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
-                self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
-                self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right
-                return True # [**]
+        if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
+            self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
+            self.dead = 0 # false
+            self.start = 1 # activate end scene countndown
+            for i in range(30): # enemy death effect
+                # on death sparks
+                angle = random.random() * math.pi * 4 # random angle in a circle
+                speed = random.random() * 8
+                self.game.sparks.append(Spark(self.rect().center, angle, 2 + random.random())) 
+                # on death particles
+                self.game.particles.append(Particle(self.game, 'confetti', self.rect().center, velocity=[math.cos(angle +math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+            self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
+            self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right]
+
+        if self.lower == 1:   # if cat furball hits the rope
+            self.velocity[1] = -0.5
+
+        if self.start and  self.game.win_delay > 0:
+            self.game.win_delay -= 1
+    
+    def rect(self):
+        '''
+        creates a rectangle at the entitiies current postion
+        '''
+        return pygame.Rect(self.pos[0], self.pos[1] + 30, self.size[0], self.size[1])
+
+
     
 
 class CatnipRecharge(PhysicsEntity):
