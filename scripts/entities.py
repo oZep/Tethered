@@ -186,6 +186,7 @@ class Player(PhysicsEntity):
         else:
             self.velocity[0] = min(self.velocity[0] + 0.1, 0) # left falling to to right
 
+
     def render(self, surf, offset={0,0}):
         '''
         partly overriding rendering for dashing
@@ -430,15 +431,18 @@ class Button(PhysicsEntity):
         (game, position: tuple, size)
         '''
         super().__init__(game, 'button', pos, size)
-        self.timer = 150
+        self.timer = 0
         self.activate = 0
     
     def update(self, tilemap, movement=(0,0)):
         
         if self.activate:
-            self.timer = 100
+            self.timer = 200
+        
+        # if player collides with button activate it
+        if self.rect().colliderect(self.game.player.rect()):
+            self.activate = 1
 
-                
         if self.timer > 0:
             self.timer -= 1
             self.set_action('on')
@@ -446,6 +450,7 @@ class Button(PhysicsEntity):
         else:
             self.set_action('idle')
             self.game.wind = 0
+            self.activate = 0
             
         
         if self.timer > 0:
