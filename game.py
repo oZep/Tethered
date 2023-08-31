@@ -151,7 +151,7 @@ class Game:
             elif spawner['variant'] == 4:
                 self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
             else:
-                self.button.append(Button(self, spawner['pos'], (8, 16)))
+                self.button.append(Button(self, (spawner['pos'][0]+2, spawner['pos'][1] + 3), (8, 16)))
 
 
         # creating 'camera' 
