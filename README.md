@@ -4,12 +4,12 @@ August 28th 2023 at 12:00 PM to September 3rd 2023 at 11:59 PM
 I only started learning pygame 1 week ago for the start date of the jam, so it's a nice challenge to use it for a game jam
 
 
-Hey did you end up talking a look at the cats diet? Ever since we gave them that new brand of catnip they've been very.. particular with their fur. It's causing their hairballs to be especially thick and **heavy**. 
+Hey did you end up talking a look at the cats diet? Ever since we gave them that new brand of canned catnip they've been very.. particular with their fur. It's causing their hairballs to be especially thick and **heavy**. 
 It's honestly really disgusting. Bob already quit because of it. 
 
 Oh, you're already working on a new project? With those two mice that boss **explicitly** said not to be tampered with or let out. What are you even doing with them?
 
-    i̴̳̙͇͆̇̆ḯ̷̞̝̱͋ỉ̴̝̹̐ͅi̵͇̣̰̾͗͘ĩ̵̟̬̥̀ï̸̥̯͝i̸̻͈͂i̵̯̠͆i̴̭̳͗i̴̧͉̣̕͝ḯ̷̡͎͕̱͋͑į̷̧̣͙͐̃i̷͖͈̞͉̍̑ỉ̵̧̡̧̛̠͝i̷͕͖͊i̴͓̽i̷̩̞̞͂͋i̴̞͉̪̓i̶̛̺̪̾i̸̖̔i̶͇̗̜̳͋ȉ̵̡̫̜̓̄͋ͅi̴̹̤̞̩͗ĩ̴̝͉̍͜i̷̖̜͇̿̈̄͘i̵̞̓í̸͚͋̔i̵͎̎̓̍̕i̴͉̐͒i̵͕͉̳̔̈́̌ȉ̸͖̌͑̆i̴̧̊̇̋i̸̻̭͈̦̐ḭ̴̦̫́̏͝ǐ̶̦̍i̷͎̥̓̾̈́̓i̵̢̯̼̹͋i̴̭̮͛i̸̡̥͐i̷̢̼̯͊i̴͕̠͊i̶̥̓̎͠i̴̠̎̐̐ĩ̷̢͙̯̿̈́ḯ̷̻̂͝í̵͈̦̺̮͗i̶̧̡̝̿͝i̵͉̣̬͈͋͂̐ī̵͓͈̌̈́̕ĩ̶i
+.............
 
 
 Jeez... mice experiments just get weirder and weirder 
