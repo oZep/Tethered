@@ -144,7 +144,7 @@ class Game:
         self.button = []
         self.turbine= []
         self.toy = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5), ('spawners', 6)]):
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5), ('spawners', 6), ('spawners', 7)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
@@ -160,14 +160,14 @@ class Game:
             elif spawner['variant'] == 6:
                 self.turbine.append(Turbine(self,spawner['pos'], (100, 300)))
             else:
-                self.toy.append(Toy(self, spawner['pos'], (16, 13)))
+                self.toy.append(Toy(self, spawner['pos'], (16, 16)))
 
         # creating 'camera' 
         self.scroll = [self.prize[0].pos[0] + 100, self.prize[0].pos[1]]
 
         self.player.catnip = 3
 
-        self.pickup = 0
+        self.pickup = 0 # toy pickup
 
 
 
@@ -382,6 +382,7 @@ class Game:
                 if not self.pickup:
                     self.toy[0].update(self.tilemap, (0,0))
                     self.toy[0].render(self.display_black, offset=render_scroll)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.toy[0].pos[0] - render_scroll[0], self.toy[0].pos[1] - render_scroll[1], self.toy[0].size[0], self.toy[0].size[1]), 3)
                 else:
                     pass
 
@@ -438,7 +439,7 @@ class Game:
                             self.player.dash()
                         if event.key == pygame.K_s:
                             self.toy[0].pickup()
-                            
+
                     if event.type == pygame.KEYUP: # when key is released
                         if event.key == pygame.K_a: # referencing WASD
                             self.movement[0] = False
