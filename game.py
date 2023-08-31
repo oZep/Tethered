@@ -290,7 +290,7 @@ class Game:
                             self.dead += 1
                             self.sfx['hit'].play()
                             self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
-                            for i in range(30): # when projectile hits player
+                            for i in range(5): # when projectile hits player
                                 # on death sparks
                                 angle = random.random() * math.pi * 2 # random angle in a circle
                                 speed = random.random() * 5
@@ -308,7 +308,7 @@ class Game:
                             self.dead += 1 # die
                             self.sfx['hit'].play()
                             self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
-                            for i in range(30): # when projectile hits player
+                            for i in range(10): # when projectile hits player
                                 # on death sparks
                                 angle = random.random() * math.pi * 2 # random angle in a circle
                                 speed = random.random() * 5
