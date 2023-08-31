@@ -463,5 +463,21 @@ class Button(PhysicsEntity):
         return pygame.Rect(self.pos[0] + 6, self.pos[1], self.size[0], self.size[1])
 
     
+class Turbine(PhysicsEntity):
+    def __init__(self, game, pos, size):
+        '''
+        instantiates 
+        (game, position: tuple, size)
+        '''
+        super().__init__(game, 'wind', pos, size)
+
+        
+    def update(self, tilemap, movement=(0,0)):
+        
+        if self.game.wind:
+            self.set_action('on')
+        else:
+            self.set_action('idle')
+
     
 

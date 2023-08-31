@@ -5,7 +5,7 @@ import random
 import pygame
 
 from scripts.utils import load_image, load_images, Animation
-from scripts.entities import PhysicsEntity, Player, Cat, Trap, Prize, CatnipRecharge, Button
+from scripts.entities import PhysicsEntity, Player, Cat, Trap, Prize, CatnipRecharge, Button, Turbine
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
@@ -52,6 +52,8 @@ class Game:
             'catnip/idle': Animation(load_images('entities/catnip/catnip')),
             'button/idle': Animation(load_images('entities/button/idle')),
             'button/on': Animation(load_images('entities/button/on')),
+            'wind/idle': Animation(load_images('entities/windturbine/idle')),
+            'wind/on': Animation(load_images('entities/windturbine/powered')),
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
             'prize/wind': Animation(load_images('entities/prize/wind')),
@@ -139,7 +141,8 @@ class Game:
         self.prize = []
         self.catnip = []
         self.button = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5)]):
+        self.turbine= []
+        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1), ('spawners', 2), ('spawners', 3), ('spawners', 4), ('spawners', 5), ('spawners', 6)]):
             if spawner['variant'] == 0: 
                 self.player.pos = spawner['pos']
             elif spawner['variant'] == 1:
@@ -150,8 +153,11 @@ class Game:
                 self.prize.append(Prize(self, spawner['pos'], (17, 100)))
             elif spawner['variant'] == 4:
                 self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
-            else:
+            elif spawner['variant'] == 5:
                 self.button.append(Button(self, (spawner['pos'][0]+2, spawner['pos'][1] + 3), (8, 16)))
+            else:
+                self.turbine.append(Turbine(self,spawner['pos'], (16, 16)))
+
 
 
         # creating 'camera' 
@@ -259,6 +265,10 @@ class Game:
                 self.clouds.render(self.display_black, offset=render_scroll)
 
                 self.tilemap.render(self.display_black, offset=render_scroll)
+
+                # render turbine before everything
+                self.turbine[0].update(self.tilemap)
+                self.turbine[0].render(self.display_2, offset=render_scroll)
 
                 # render the enemies
                 for enemy in self.enemies.copy():
@@ -369,7 +379,6 @@ class Game:
                 self.button[0].render(self.display_2, offset=render_scroll)
                 # for testing
                 pygame.draw.rect(self.display_black, (255, 0, 0), (self.button[0].pos[0] - render_scroll[0] + 6, self.button[0].pos[1] - render_scroll[1], self.button[0].size[0], self.button[0].size[1]), 3)
-
 
                 # spark affect
                 for spark in self.sparks.copy():
