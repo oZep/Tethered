@@ -21,8 +21,12 @@ class Game:
 
         # change the window caption
         pygame.display.set_caption("Tathered")
+
         # create window
         self.screen = pygame.display.set_mode((640,480))
+
+        # icon
+        pygame.display.set_icon(pygame.image.load("data/images/endScene/2.png").convert())
 
         self.display = pygame.Surface((320, 240), pygame.SRCALPHA) # render on smaller resolution then scale it up to bigger screen
         self.display_black = pygame.Surface((320, 240), pygame.SRCALPHA) # render on smaller resolution then scale it up to bigger screen
