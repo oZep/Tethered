@@ -304,7 +304,7 @@ class Cat(PhysicsEntity):
             self.walking = max(0, self.walking - 1)
             if not self.walking:
                 dis = (self.game.player.pos[0] - self.pos[0], self.game.player.pos[1] - self.pos[1])
-                if (abs(dis[1]) < 15) and (abs(dis[0] < 30)):
+                if (abs(dis[1]) < 15) and (abs(dis[0]) < 160): # only 10 blocks horizontal distance
                     if (self.flip and dis[0] < 0):
                         self.set_action('shoot')
                         self.shoot_anim = 20
