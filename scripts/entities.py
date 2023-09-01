@@ -383,7 +383,7 @@ class Prize(PhysicsEntity):
         self.start = 0
 
 
-    def update(self, tilemap, movement=(0,0)):
+    def update(self, tilemap, movement=[0,0]):
         if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
             self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
             self.dead = 0 # false
@@ -398,8 +398,9 @@ class Prize(PhysicsEntity):
             self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random())) # left
             self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random())) # right]
 
-        if self.lower == 1:   # if cat furball hits the rope
-            self.velocity[1] = -0.5
+        if self.lower:   # if cat furball hits the rope
+            self.pos[1] += 0.05
+            self.game.scroll = [self.pos[0] - 100, self.pos[1]]
 
         if self.start and  self.game.win_delay > 0:
             self.game.win_delay -= 1

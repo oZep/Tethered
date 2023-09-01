@@ -109,7 +109,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 0 # 600
+        self.story_timer = 600
         self.bad_ending = 1000
         self.win_delay = 100
 
@@ -125,6 +125,8 @@ class Game:
 
         # reset wind
         self.wind = 0
+        self.bad_ending = 600
+        self.win_delay = 100
 
         self.projectiles = []
         self.sparks = []
@@ -214,10 +216,10 @@ class Game:
                 self.story_timer -= 1 
 
             elif self.prize[0].dead == 1: # when prize = 1 --> Lose
-                if self.bad_ending > 700:
+                if self.bad_ending > 400:
                     self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
 
-                elif self.bad_ending > 350:
+                elif self.bad_ending > 150:
                     self.screen.blit(self.assets['2'], (0,0)) # no outline
                 else:
                     # clear the screen for new image generation in loop
@@ -279,10 +281,17 @@ class Game:
                 self.clouds.render(self.display_2, offset=render_scroll)
 
                 self.tilemap.render(self.display_black, offset=render_scroll)
+
+                self.prize[0].update(self.tilemap)
+                self.prize[0].render(self.display_2, offset=render_scroll) # render prize
+                # for testing
+                # pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
+                # pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
                 
                 # render turbine before everything
                 self.turbine[0].update(self.tilemap)
                 self.turbine[0].render(self.display_2, offset=render_scroll)
+
 
                 # render the enemies
                 for enemy in self.enemies.copy():
@@ -334,14 +343,7 @@ class Game:
                     if self.prize[0].rect().collidepoint(projectile[0]): # cat hits traps, code that activates bad ending
                         self.prize[0].lower = 1 # lower prize
                         self.sfx['hit'].play()
-                        self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
-                        for i in range(10): # when projectile hits player
-                            # on death sparks
-                            angle = random.random() * math.pi * 2 # random angle in a circle
-                            speed = random.random() * 5
-                            self.sparks.append(Spark(self.player.rect().center, angle, 2 + random.random())) 
-                            # on death particles
-                            self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
+                        self.screenshake = max(10, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
                     
                     if self.button[0].rect().collidepoint(projectile[0]): # cat hits traps, code that activates bad ending
                         self.button[0].activate = 1
@@ -385,12 +387,6 @@ class Game:
                     kill =  enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display_black, offset=render_scroll) # change outline here
                     # add mechanics later
-
-                self.prize[0].update(self.tilemap)
-                self.prize[0].render(self.display_2, offset=render_scroll) # render prize
-                # for testing
-                # pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
-                # pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
 
                 self.toy[0].update(self.tilemap, (0,0)) # update cat toy
                 if not self.pickup: # if not picked up, render
