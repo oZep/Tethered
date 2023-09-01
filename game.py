@@ -218,6 +218,13 @@ class Game:
                         pygame.quit()
                         sys.exit()
                 self.story_timer -= 1 
+            
+            elif self.prize[0].dead == 0 and not self.win_delay and self.level == self.max_level:  # when prize = 0 --> win
+                self.screen.blit(self.assets['4'], (0,0)) # no outline       # change to you win! nice picture with mouses together
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: # have to code the window closing
+                        pygame.quit()
+                        sys.exit()
 
             elif self.prize[0].dead == 1: # when prize = 1 --> Lose
                 if self.bad_ending > 400:
@@ -237,13 +244,6 @@ class Game:
                         pygame.quit()
                         sys.exit()
                 self.bad_ending -= 1 
-            
-            elif self.prize[0].dead == 0 and not self.win_delay and self.level == self.max_level:  # when prize = 0 --> win
-                self.screen.blit(self.assets['4'], (0,0)) # no outline       # change to you win! nice picture with mouses together
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT: # have to code the window closing
-                        pygame.quit()
-                        sys.exit()
 
             elif self.prize[0].dead == 0 and not self.win_delay:
                 self.transition += 1 # start timer, increasing value past 0
