@@ -85,15 +85,30 @@ class Game:
         self.sfx = {
             'jump': pygame.mixer.Sound('data/sfx/jump.wav'),
             'dash': pygame.mixer.Sound('data/sfx/dash.wav'),
+            'win': pygame.mixer.Sound('data/sfx/win.wav'),
             'hit': pygame.mixer.Sound('data/sfx/hit.wav'),
             'shoot': pygame.mixer.Sound('data/sfx/shoot.wav'),
-            'ambience': pygame.mixer.Sound('data/sfx/ambience.wav'),
+            'bad': pygame.mixer.Sound('data/sfx/bad.mp3'),
+            'get': pygame.mixer.Sound('data/sfx/get.mp3'),
+            'stun': pygame.mixer.Sound('data/sfx/stun.wav'),
+            'transition': pygame.mixer.Sound('data/sfx/transition.wav'),
+            'pickup': pygame.mixer.Sound('data/sfx/pickup.wav'),
+            'drop': pygame.mixer.Sound('data/sfx/drop.wav'),
+            'button': pygame.mixer.Sound('data/sfx/button.wav'),
+
         }
         
-        self.sfx['ambience'].set_volume(0.2)
+        self.sfx['win'].set_volume(0.3)
+        self.sfx['transition'].set_volume(0.3)
+        self.sfx['bad'].set_volume(0.3)
+        self.sfx['get'].set_volume(0.4)
+        self.sfx['pickup'].set_volume(0.4)
+        self.sfx['drop'].set_volume(0.6)
+        self.sfx['stun'].set_volume(0.6)
+        self.sfx['button'].set_volume(0.2)
         self.sfx['shoot'].set_volume(0.4)
         self.sfx['hit'].set_volume(0.8)
-        self.sfx['dash'].set_volume(0.3)
+        self.sfx['dash'].set_volume(0.5)
         self.sfx['jump'].set_volume(0.7)
 
         self.clouds = Clouds(self.assets['clouds'], count=4)
@@ -113,7 +128,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 600
+        self.story_timer = 0 #600
         self.bad_ending = 1000
         self.win_delay = 100
 
@@ -220,17 +235,27 @@ class Game:
                 self.story_timer -= 1 
             
             elif self.prize[0].dead == 0 and not self.win_delay and self.level == self.max_level:  # when prize = 0 --> win
+                self.sfx['transition'].play()
                 self.screen.blit(self.assets['4'], (0,0)) # no outline       # change to you win! nice picture with mouses together
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT: # have to code the window closing
                         pygame.quit()
                         sys.exit()
 
+            elif self.prize[0].dead == 0 and not self.win_delay:
+                self.transition += 1 # start timer, increasing value past 0
+                if self.transition > 30: 
+                    self.level = min(self.level + 1, self.max_level) # increase level
+                    self.sfx['transition'].play()
+                    self.load_level(self.level) # self.load_level(self.level) 
+                if self.transition < 0:
+                    self.transition += 1 # goes up automatically until 0
+
             elif self.prize[0].dead == 1: # when prize = 1 --> Lose
                 if self.bad_ending > 400:
                     self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
 
-                elif self.bad_ending > 150:
+                elif self.bad_ending > 160:
                     self.screen.blit(self.assets['2'], (0,0)) # no outline
                 else:
                     # clear the screen for new image generation in loop
@@ -244,14 +269,6 @@ class Game:
                         pygame.quit()
                         sys.exit()
                 self.bad_ending -= 1 
-
-            elif self.prize[0].dead == 0 and not self.win_delay:
-                self.transition += 1 # start timer, increasing value past 0
-                if self.transition > 30: 
-                    self.level = min(self.level + 1, self.max_level) # increase level
-                    self.load_level(self.level) # self.load_level(self.level) 
-                if self.transition < 0:
-                    self.transition += 1 # goes up automatically until 0
 
             else:
                 # clear the screen for new image generation in loop
@@ -346,7 +363,6 @@ class Game:
                     
                     if self.prize[0].rect().collidepoint(projectile[0]): # cat hits traps, code that activates bad ending
                         self.prize[0].lower = 1 # lower prize
-                        self.sfx['hit'].play()
                         self.screenshake = max(10, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
                     
                     if self.button[0].rect().collidepoint(projectile[0]): # cat hits traps, code that activates bad ending
@@ -374,7 +390,7 @@ class Game:
 
                     if self.prize[0].rect().colliderect(enemy): # cat hits traps, code that activates bad ending
                         self.prize[0].dead = True # prize dies
-                        self.sfx['hit'].play()
+                        self.sfx['bad'].play()
                         self.screenshake = max(16, self.screenshake)  # apply screenshake, larger wont be overrided by a smaller screenshake
                         for i in range(10): # when projectile hits player
                             # on death sparks
