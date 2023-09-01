@@ -523,7 +523,7 @@ class Toy(PhysicsEntity):
 
     def update(self, tilemap, movement=(0,0)):
         '''
-        updates UI
+        updates UI with toy
         '''
         if self.game.pickup:
             self.pos = (self.game.player.pos[0], self.game.player.pos[1])
@@ -547,4 +547,5 @@ class Toy(PhysicsEntity):
         if self.game.pickup:
             self.game.pickup = 0
             self.game.sfx['drop'].play()
+            
 
