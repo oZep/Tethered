@@ -345,7 +345,6 @@ class Cat(PhysicsEntity):
         if abs(self.game.player.dashing) >= 50:
             if self.rect().colliderect(self.game.player.rect()):
                 self.game.screenshake = max(16, self.game.screenshake)
-                self.game.sfx['hit'].play()
                 for i in range(30):
                     angle = random.random() * math.pi * 2
                     speed = random.random() * 5
@@ -353,6 +352,7 @@ class Cat(PhysicsEntity):
                     self.game.particles.append(Particle(self.game, 'particle_2', self.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle + math.pi) * speed * 0.5], frame=random.randint(0, 7)))
                 self.game.sparks.append(Spark(self.rect().center, 0, 5 + random.random()))
                 self.game.sparks.append(Spark(self.rect().center, math.pi, 5 + random.random()))
+                self.game.sfx['stun'].play()
                 self.set_action('stun')
                 self.walking = random.randint(150, 240) # reset walking timer bigger timer
                 self.stun = self.walking
@@ -385,6 +385,7 @@ class Prize(PhysicsEntity):
 
     def update(self, tilemap, movement=[0,0]):
         if self.rect().colliderect(self.game.player.rect()): # if enemy hitbox collides with player
+            self.game.sfx['win'].play()
             self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
             self.dead = 0 # false
             self.start = 1 # activate end scene countndown
@@ -437,6 +438,7 @@ class CatnipRecharge(PhysicsEntity):
             if self.rect().colliderect(self.game.player.rect()) and not self.timer and self.game.player.catnip != 3: # if enemy hitbox collides with player
                 self.game.screenshake = max(10, self.game.screenshake)  # apply screenshake
                 self.game.player.catnip = min(3, self.game.player.catnip +1) # just to be sure
+                self.game.sfx['get'].play()
                 self.timer = 150
                 for i in range(10): # enemy death effect
                     # on death sparks
@@ -470,6 +472,7 @@ class Button(PhysicsEntity):
         # if player collides with button activate it
         if self.rect().colliderect(self.game.player.rect()) or self.activate:
             self.activate = 0
+            self.game.sfx['button'].play()
             self.timer = 200
 
         if self.timer > 0:
@@ -531,10 +534,11 @@ class Toy(PhysicsEntity):
         '''
         picks up toy
         '''
-        if not self.rect().colliderect(self.game.player.rect()):
+        if not self.rect().colliderect(self.game.player.rect()) or self.game.pickup:
             pass
         else:
             self.game.pickup = 1
+            self.game.sfx['pickup'].play()
 
     def drop(self):
         '''
@@ -542,4 +546,5 @@ class Toy(PhysicsEntity):
         '''
         if self.game.pickup:
             self.game.pickup = 0
+            self.game.sfx['drop'].play()
 
