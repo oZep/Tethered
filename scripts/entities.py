@@ -371,7 +371,14 @@ class Trap(PhysicsEntity):
 
 
     def update(self, tilemap, movement=(0,0)):
-        super().update(tilemap, (0, 0))
+        movement=(0,0)
+    
+    def rect(self):
+        '''
+        creates a rectangle at the entitiies current postion
+        '''
+        return pygame.Rect(self.pos[0] + 8, self.pos[1] + 5, self.size[0], self.size[1])
+
 
 
 class Prize(PhysicsEntity):
@@ -384,6 +391,7 @@ class Prize(PhysicsEntity):
         self.dead = -1
         self.lower = 0
         self.start = 0
+        self.track_mov = 0
 
 
     def update(self, tilemap, movement=[0,0]):
@@ -410,9 +418,16 @@ class Prize(PhysicsEntity):
             self.game.win_delay -= 1
 
         if self.game.wind:
+            if not self.track_mov:
+                self.pos = (self.pos[0] - 30, self.pos[1])
+                self.track_mov = -1
             self.set_action('wind')
         else:
             self.set_action('idle')
+            if self.track_mov == -1:
+                self.pos = (self.pos[0] + 30, self.pos[1])
+                self.track_mov = 0
+
     
     def rect(self):
         '''
@@ -453,7 +468,7 @@ class CatnipRecharge(PhysicsEntity):
         if self.timer > 0:
             self.timer -= 1
 
-        def rect(self):
+    def rect(self):
             '''
             creates a rectangle at the entitiies current postion
             '''

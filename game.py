@@ -175,11 +175,11 @@ class Game:
             elif spawner['variant'] == 1:
                 self.enemies.append(Cat(self, spawner['pos'], (16, 13)))
             elif spawner['variant'] == 2:
-                self.trap.append(Trap(self, spawner['pos'], (8, 17)))
+                self.trap.append(Trap(self, spawner['pos'], (10, 16)))
             elif spawner['variant'] == 3:
                 self.prize.append(Prize(self, spawner['pos'], (17, 100)))
             elif spawner['variant'] == 4:
-                self.catnip.append(CatnipRecharge(self, spawner['pos'], (16, 16)))
+                self.catnip.append(CatnipRecharge(self, spawner['pos'], (14, 16)))
             elif spawner['variant'] == 5:
                 self.button.append(Button(self, (spawner['pos'][0]+2, spawner['pos'][1] + 3), (8, 16)))
             elif spawner['variant'] == 6:
@@ -326,8 +326,8 @@ class Game:
                 self.prize[0].update(self.tilemap)
                 self.prize[0].render(self.display_2, offset=render_scroll) # render prize
                 # for testing
-                # pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
-                # pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
+                pygame.draw.rect(self.display_black, (255, 0, 0), (self.prize[0].pos[0] - render_scroll[0], self.prize[0].pos[1] - render_scroll[1] + 30, self.prize[0].size[0], self.prize[0].size[1]), 3)
+                pygame.draw.rect(self.display_black, (0, 225, 0), (self.prize[0].pos[0] - render_scroll[0] + 10, self.prize[0].pos[1] - render_scroll[1] + 90, self.prize[0].size[0], self.prize[0].size[1] - 60), 3)
                 
                 # render turbine before everything
                 self.turbine[0].update(self.tilemap)
@@ -344,14 +344,14 @@ class Game:
                     recharge.update(self.tilemap, (0,0))
                     recharge.render(self.display_black, offset=render_scroll)
                     # hitbox testing
-                    # pygame.draw.rect(self.display_black, (255, 0, 0), (recharge.pos[0] - render_scroll[0] - 6, recharge.pos[1] - render_scroll[1], recharge.size[0], recharge.size[1]), 3)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (recharge.pos[0] - render_scroll[0] - 6, recharge.pos[1] - render_scroll[1], recharge.size[0], recharge.size[1]), 3)
 
                 if not self.dead:
                     # update player movement
                     self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
                     self.player.render(self.display_black, offset=render_scroll)
                     # hitbox testing
-                    # pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0] + 7, self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0] + 7, self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
 
                 # render/spawn bullet projectiles
                 # [[x, y], direction, timer]
@@ -394,7 +394,7 @@ class Game:
                     kill =  enemy.update(self.tilemap, (0,0))
                     enemy.render(self.display_black, offset=render_scroll) # change outline here
                     # for testing
-                    # pygame.draw.rect(self.display_black, (255, 0, 0), (enemy.pos[0] - render_scroll[0] + 7, enemy.pos[1] - render_scroll[1], enemy.size[0], enemy.size[1]), 3)
+                    pygame.draw.rect(self.display_black, (255, 0, 0), (enemy.pos[0] - render_scroll[0] + 8, enemy.pos[1] - render_scroll[1] + 5, enemy.size[0], enemy.size[1]), 3)
                     if abs(self.player.dashing) < 50: # not dashing
                         if self.player.rect().colliderect(enemy): # player collides with enemy
                             self.dead += 1 # die
