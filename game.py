@@ -37,9 +37,7 @@ class Game:
         self.movement = [False, False, False, False]
 
         self.assets = {
-            'decor': load_images('tiles/decor'),
             'grass': load_images('tiles/grass'),
-            'large_decor': load_images('tiles/large_decor'),
             'stone': load_images('tiles/stone'),
             'player': load_image('entities/player/player.png'),
             'background': load_image('background.png'),
@@ -155,11 +153,6 @@ class Game:
         # transition for levels
         self.transition = -30
 
-        # leaf particle affect
-        self.leaf_spawners = []
-        for tree in self.tilemap.extract([('large_decor', 2)], keep=True):
-            self.leaf_spawners.append(pygame.Rect((4 + tree['pos'][0]), (4 + tree['pos'][1]), 23, 13)) # offsetting by 4 due to tree sprite
-            # Rect(x, y, width, height)
 
         # spawn the ememies
         self.enemies = []
