@@ -305,12 +305,6 @@ class Game:
                 # fix the jitter
                 render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
 
-                # spawn particles
-                for rect in self.leaf_spawners:
-                    if random.random() * 49999 < rect.width * rect.height:
-                        pos = (rect.x + random.random() * rect.width, rect.y + random.random() * rect.height)
-                        self.particles.append(Particle(self, 'leaf', pos, velocity=[-0.1, 0.3], frame=random.randint(0, 20)))
-
                 self.clouds.update() # updates clouds before the rest of the tiles
                 self.clouds.render(self.display_2, offset=render_scroll)
 
