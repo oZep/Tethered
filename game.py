@@ -100,7 +100,7 @@ class Game:
         
         self.sfx['win'].set_volume(0.3)
         self.sfx['transition'].set_volume(0.3)
-        self.sfx['bad'].set_volume(0.3)
+        self.sfx['bad'].set_volume(0.7)
         self.sfx['get'].set_volume(0.4)
         self.sfx['pickup'].set_volume(0.4)
         self.sfx['drop'].set_volume(0.6)
@@ -131,6 +131,8 @@ class Game:
         self.story_timer = 0 #600
         self.bad_ending = 1000
         self.win_delay = 100
+
+        self.music = 1
 
 
 
@@ -191,8 +193,21 @@ class Game:
         self.player.catnip = 3
 
         self.pickup = 0 # toy pickup
+    
+    def playmusic(self, play):
+        '''
+        plays game music once and loops it
+        '''
+        if self.music == 1 and play:
+            pygame.mixer.music.load('data/music.mp3')
+            pygame.mixer.music.set_volume(0.2)
+            pygame.mixer.music.play(-1)
+            self.music = 0
 
-
+        if self.prize[0].dead == 1:
+            self.music = 1 # reset music and stop it
+            pygame.mixer.music.stop()
+            
 
     def run(self):
         '''
@@ -233,6 +248,27 @@ class Game:
                         pygame.quit()
                         sys.exit()
                 self.story_timer -= 1 
+
+            
+            elif self.prize[0].dead == 1: # when prize = 1 --> Lose
+                self.playmusic(0)
+                if self.bad_ending > 340:
+                    self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
+
+                elif self.bad_ending > 90:
+                    self.screen.blit(self.assets['2'], (0,0)) # no outline
+                else:
+                    # clear the screen for new image generation in loop
+                    self.screen.blit(self.assets['3'], (0,0)) # no outline
+                
+                if self.bad_ending == 0: # end game kick people out
+                    self.load_level(self.level)
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: # have to code the window closing
+                        pygame.quit()
+                        sys.exit()
+                self.bad_ending -= 1 
             
             elif self.prize[0].dead == 0 and not self.win_delay and self.level == self.max_level:  # when prize = 0 --> win
                 self.sfx['transition'].play()
@@ -251,26 +287,10 @@ class Game:
                 if self.transition < 0:
                     self.transition += 1 # goes up automatically until 0
 
-            elif self.prize[0].dead == 1: # when prize = 1 --> Lose
-                if self.bad_ending > 400:
-                    self.screen.blit(self.assets['1'], (0,0)) # no outline   # change to noot noot
-
-                elif self.bad_ending > 160:
-                    self.screen.blit(self.assets['2'], (0,0)) # no outline
-                else:
-                    # clear the screen for new image generation in loop
-                    self.screen.blit(self.assets['3'], (0,0)) # no outline
-                
-                if self.bad_ending == 0: # end game kick people out
-                    self.load_level(self.level)
-
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT: # have to code the window closing
-                        pygame.quit()
-                        sys.exit()
-                self.bad_ending -= 1 
-
             else:
+
+                self.playmusic(1)
+
                 # clear the screen for new image generation in loop
                 self.display_black.fill((0, 0, 0, 0))    # black outlines
                 self.display_2.blit(self.assets['background'], (0,0)) # no outline
