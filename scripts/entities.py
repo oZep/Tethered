@@ -260,14 +260,40 @@ class Cat(PhysicsEntity):
         self.walking =0
         self.shoot_anim = 0
         self.stun = 0
+        self.toy = 0
 
-    
-    def update(self, tilemap, movement=(0,0)):
-        if self.timer > 0:
-            self.timer -= 1
 
     def update(self, tilemap, movement=(0, 0)):
-        if self.walking and not self.stun:
+
+        dis = (self.game.toy[0].pos[0] - self.pos[0], self.game.toy[0].pos[1] - self.pos[1])
+        if not self.stun and abs(dis[1]) < 16 and not self.game.pickup and abs(dis[0]) < 10: # on same plane (blocks are 16x16)
+            if (dis[0]) >= 0 and self.flip: # toy   cat [facing right]
+                self.flip = not self.flip # make cat face left
+            if (dis[0]) < 0 and not self.flip: # cat[facing left]   toy 
+                self.flip = not self.flip # can cat face right
+            # stop cat from moving
+            self.walking = 200
+            self.toy = 1
+            if (dis[0] > 0) and not self.timer:
+                self.set_action('shoot')
+                self.shoot_anim = 20
+                self.timer = 100 # timer for when furball
+                self.game.sfx['shoot'].play()
+                self.game.projectiles.append([[self.rect().centerx, self.rect().centery], +1.5, 0])
+                for i in range(4):
+                    self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5 + math.pi, 2 + random.random()))
+            elif (dis[0] < 0) and not self.timer:
+                self.set_action('shoot')
+                self.shoot_anim = 20
+                self.timer = 100 # timer for when furball
+                self.game.sfx['shoot'].play()
+                self.game.projectiles.append([[self.rect().centerx, self.rect().centery], -1.5, 0])
+                for i in range(4):
+                    self.game.sparks.append(Spark(self.game.projectiles[-1][0], random.random() - 0.5 + math.pi, 2 + random.random()))
+
+
+
+        if self.walking and not self.stun and not self.toy: # doing a check to stop movement
             if tilemap.solid_check((self.rect().centerx + (-7 if self.flip else 7), self.pos[1] + 23)):
                 if (self.collisions['right'] or self.collisions['left']):
                     self.flip = not self.flip
@@ -313,6 +339,8 @@ class Cat(PhysicsEntity):
             self.shoot_anim -= 1
         if self.stun > 0:
             self.stun -= 1
+        if self.timer > 0: # timer for cat shoot when prize
+            self.timer -= 1
             
         if abs(self.game.player.dashing) >= 50:
             if self.rect().colliderect(self.game.player.rect()):

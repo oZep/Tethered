@@ -276,10 +276,10 @@ class Game:
                         self.particles.append(Particle(self, 'leaf', pos, velocity=[-0.1, 0.3], frame=random.randint(0, 20)))
 
                 self.clouds.update() # updates clouds before the rest of the tiles
-                self.clouds.render(self.display_black, offset=render_scroll)
+                self.clouds.render(self.display_2, offset=render_scroll)
 
                 self.tilemap.render(self.display_black, offset=render_scroll)
-
+                
                 # render turbine before everything
                 self.turbine[0].update(self.tilemap)
                 self.turbine[0].render(self.display_2, offset=render_scroll)
