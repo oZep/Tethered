@@ -217,13 +217,13 @@ class Player(PhysicsEntity):
                 self.velocity[0] = 3.5 
                 self.velocity[1] = -2.5
                 self.air_time = 5
-                self.jumps = max(0, self.jumps -1) # allows player to always wall jump, but we want to consume a jump if they have it, max so min = 0
+                self.jumps = max(0, self.jumps - 1) # allows player to always wall jump, but we want to consume a jump if they have it, max so min = 0
                 return True
             elif not self.flip and self.last_movement[0] > 0:
                 self.velocity[0] = -3.5
                 self.velocity[1] = -2.5
                 self.air_time = 5
-                self.jumps = max(0, self.jumps -1) 
+                self.jumps = max(0, self.jumps - 1) 
                 return True
         elif self.jumps: # if jump = 0, returns false
             self.velocity[1] = -3
@@ -266,7 +266,7 @@ class Cat(PhysicsEntity):
     def update(self, tilemap, movement=(0, 0)):
 
         dis = (self.game.toy[0].pos[0] - self.pos[0], self.game.toy[0].pos[1] - self.pos[1])
-        if not self.stun and abs(dis[1]) < 16 and not self.game.pickup and abs(dis[0]) < 10: # on same plane (blocks are 16x16)
+        if not self.stun and abs(dis[1]) < 14 and not self.game.pickup and abs(dis[0]) < 10: # on same plane (blocks are 16x16)
             if (dis[0]) >= 0 and self.flip: # toy   cat [facing right]
                 self.flip = not self.flip # make cat face left
             if (dis[0]) < 0 and not self.flip: # cat[facing left]   toy 
@@ -304,7 +304,7 @@ class Cat(PhysicsEntity):
             self.walking = max(0, self.walking - 1)
             if not self.walking:
                 dis = (self.game.player.pos[0] - self.pos[0], self.game.player.pos[1] - self.pos[1])
-                if (abs(dis[1]) < 15):
+                if (abs(dis[1]) < 15) and (abs(dis[0] < 30)):
                     if (self.flip and dis[0] < 0):
                         self.set_action('shoot')
                         self.shoot_anim = 20

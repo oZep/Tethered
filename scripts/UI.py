@@ -45,5 +45,5 @@ class Levelbar:
         (surface, font size)
         '''
         self.fontsize = fontsize
-        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"Level {self.level}", False, (255,255, 0))
+        current_level = pygame.font.SysFont('Superstar', fontsize).render(f"Level {self.level}", False, (255, 255, 255))
         surf.blit(current_level, self.pos)

@@ -152,7 +152,7 @@ class Game:
             elif spawner['variant'] == 1:
                 self.enemies.append(Cat(self, spawner['pos'], (16, 13)))
             elif spawner['variant'] == 2:
-                self.trap.append(Trap(self, spawner['pos'], (15, 17)))
+                self.trap.append(Trap(self, spawner['pos'], (8, 17)))
             elif spawner['variant'] == 3:
                 self.prize.append(Prize(self, spawner['pos'], (17, 100)))
             elif spawner['variant'] == 4:
@@ -395,7 +395,8 @@ class Game:
                 self.toy[0].update(self.tilemap, (0,0)) # update cat toy
                 if not self.pickup: # if not picked up, render
                     self.toy[0].render(self.display_black, offset=render_scroll)
-                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.toy[0].pos[0] - render_scroll[0], self.toy[0].pos[1] - render_scroll[1], self.toy[0].size[0], self.toy[0].size[1]), 3)
+                    # for hitbox testing
+                    # pygame.draw.rect(self.display_black, (255, 0, 0), (self.toy[0].pos[0] - render_scroll[0], self.toy[0].pos[1] - render_scroll[1], self.toy[0].size[0], self.toy[0].size[1]), 3)
                 else:
                     pass
 
