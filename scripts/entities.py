@@ -180,6 +180,9 @@ class Player(PhysicsEntity):
             self.game.particles.append(Particle(self.game, 'particle_2', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
 
         
+        if abs(self.velocity[0]) < 0.1: # stops small sliding across screen after dash
+            self.velocity[0] = 0
+
         # normalize horizontal vel "HORIZONTAL"
         if self.velocity[0] > 0:
             self.velocity[0] = max(self.velocity[0] - 0.1, 0) # right falling to left
