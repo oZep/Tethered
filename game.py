@@ -20,7 +20,7 @@ class Game:
         pygame.init()
 
         # change the window caption
-        pygame.display.set_caption("Tathered")
+        pygame.display.set_caption("Mouse Disconnected")
 
         # create window
         self.screen = pygame.display.set_mode((640,480))
@@ -126,7 +126,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 600
+        self.story_timer = 500
         self.bad_ending = 1000
         self.win_delay = 100
 
@@ -216,25 +216,25 @@ class Game:
         while True:
             self.display.fill((0, 0, 0, 0))    # outlines
             if self.story_timer > 0:
-                if self.story_timer > 500:
+                if self.story_timer > 400:
                     self.screen.blit(self.assets['story1'], (0,0)) # no outline
 
-                elif self.story_timer > 400:
+                elif self.story_timer > 300:
                     self.screen.blit(self.assets['story2'], (0,0)) # no outline
 
-                elif self.story_timer > 300:
+                elif self.story_timer > 200:
                     self.screen.blit(self.assets['story3'], (0,0)) # no outline
 
-                elif self.story_timer > 150:
+                elif self.story_timer > 100:
                     # clear the screen for new image generation in loop
                     self.screen.blit(self.assets['story4'], (0,0)) # no outline
-                    text = pygame.font.SysFont('FFF Forward', 300).render("WHO DO YOU THINK YOU ARE HOMIE?", True, (255, 255, 255)) # tired to get it to be less fuzzy
-                    scaled_text = pygame.transform.scale(text, (text.get_width() * 0.1, text.get_height() * 0.1))
-                    self.screen.blit(scaled_text, (self.screen.get_width()/4 - 60, 410))
+                    # text = pygame.font.SysFont('', 300).render("Bruh?", True, (255, 255, 255)) # tired to get it to be less fuzzy
+                    # scaled_text = pygame.transform.scale(text, (text.get_width() * 0.1, text.get_height() * 0.1))
+                    # self.screen.blit(scaled_text, (self.screen.get_width()/4 - 60, 410))
                 else:
                     self.screen.blit(self.assets['story5'], (0,0)) # no outline
-                    text = pygame.font.SysFont('FFF Forward', 30).render("IMMA TEACH YOU A LESSON", False, (255, 255, 255))
-                    self.screen.blit(text, (self.screen.get_width()/4 + 20, 410))
+                    # text = pygame.font.SysFont('FFF Forward', 30).render("Bruh.", False, (255, 255, 255))
+                    # self.screen.blit(text, (self.screen.get_width()/4 + 20, 410))
                 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT: # have to code the window closing
@@ -412,7 +412,7 @@ class Game:
 
                 # render the enemies
                 for enemy in self.prize.copy():
-                    kill =  enemy.update(self.tilemap, (0,0))
+                    kill =  enemy.update(self.tilemap, [0,0])
                     enemy.render(self.display_black, offset=render_scroll) # change outline here
                     # add mechanics later
 
