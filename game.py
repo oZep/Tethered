@@ -62,7 +62,7 @@ class Game:
             'trap/idle': Animation(load_images('entities/trap/idle')),
             'prize/idle': Animation(load_images('entities/prize/idle')),
             'prize/wind': Animation(load_images('entities/prize/wind')),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur=10),
             'player/run': Animation(load_images('entities/player/run'), img_dur=6),
             'player/jump': Animation(load_images('entities/player/jump')),
             'player/slide': Animation(load_images('entities/player/slide')),
@@ -112,7 +112,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=4)
 
         # initalizing player
-        self.player = Player(self, (100, 100), (13, 14))
+        self.player = Player(self, (100, 100), (15, 14))
 
         # initalizing tilemap
         self.tilemap = Tilemap(self, tile_size=16)
@@ -126,7 +126,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 0 #600
+        self.story_timer = 600
         self.bad_ending = 1000
         self.win_delay = 100
 
@@ -295,7 +295,7 @@ class Game:
                     if self.dead >= 10: # to make the level transitions smoother
                         self.transition = min(self.transition + 1, 30) # go as high as it can without changing level
                     if self.dead > 40: # timer that starts when you die
-                        self.load_level(self.level)
+                        self.load_level(self.level) # self.level
 
                 # move 'camera' to focus on player, make him the center of the screen
                 # scroll = current scroll + (where we want the camera to be - what we have/can see currently) 
@@ -333,12 +333,6 @@ class Game:
                     # hitbox testing
                     #pygame.draw.rect(self.display_black, (255, 0, 0), (recharge.pos[0] - render_scroll[0] - 6, recharge.pos[1] - render_scroll[1], recharge.size[0], recharge.size[1]), 3)
 
-                if not self.dead:
-                    # update player movement
-                    self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
-                    self.player.render(self.display_black, offset=render_scroll)
-                    # hitbox testing
-                    pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0], self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
 
                 # render/spawn bullet projectiles
                 # [[x, y], direction, timer]
@@ -407,6 +401,13 @@ class Game:
                             # on death particles
                             self.particles.append(Particle(self, 'particle', self.player.rect().center, velocity=[math.cos(angle + math.pi) * speed * 0.5, math.sin(angle * math.pi) * speed * 0.5], frame=random.randint(0, 7)))
 
+
+                if not self.dead:
+                    # update player movement
+                    self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
+                    self.player.render(self.display_black, offset=render_scroll)
+                    # hitbox testing
+                    # pygame.draw.rect(self.display_black, (255, 0, 0), (self.player.pos[0] - render_scroll[0], self.player.pos[1] - render_scroll[1], self.player.size[0], self.player.size[1]), 3)
 
 
                 # render the enemies
