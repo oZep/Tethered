@@ -127,7 +127,7 @@ class Player(PhysicsEntity):
         self.air_time += 1
 
         # falling, falling, and well, falling
-        if self.air_time > 300:
+        if self.air_time > 120:
             if not self.game.dead:
                 self.game.screenshake = max(16, self.game.screenshake)  # apply screenshake
             self.game.dead += 1
@@ -143,13 +143,12 @@ class Player(PhysicsEntity):
             self.velocity[1] = min(self.velocity[1], 0.5) # slow down falling
             if self.collisions['right']: # determine which animation to show
                 self.flip = False
-                self.set_action('wall_slide')
             else:
                 self.flip = True
-                self.set_action('wall_slide')
+            self.set_action('wall_slide')
 
         if not self.wall_slide: 
-            if self.air_time > 10: # in air for some time (highest priority)
+            if self.air_time > 4: # in air for some time (highest priority)
                 self.set_action('jump')
             elif movement[0] != 0: # if moving horizontally
                 self.set_action('run')
@@ -164,6 +163,7 @@ class Player(PhysicsEntity):
                 speed = random.random() * 0.5 + 0.5 # random from 0.5 to 1
                 pvelocity = [math.cos(angle) * speed, math.sin(angle) * speed]
                 self.game.particles.append(Particle(self.game, 'particle_2', self.rect().center, velocity=pvelocity, frame=random.randint(0, 7)))
+        
         # dash cooldown
         if self.dashing > 0:
             self.dashing = max(0, self.dashing - 1)
@@ -248,7 +248,7 @@ class Player(PhysicsEntity):
         '''
         creates a rectangle at the entitiies current postion
         '''
-        return pygame.Rect(self.pos[0] + 7, self.pos[1], self.size[0], self.size[1])
+        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
     
             
 

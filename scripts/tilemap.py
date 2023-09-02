@@ -148,4 +148,4 @@ class Tilemap:
                     # (tile in assets, rendering pos)
                     surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] * self.tile_size - offset[0], tile['pos'][1] * self.tile_size - offset[1]))
                     # for hitbox testing
-                    # pygame.draw.rect(surf, (255, 0, 0), (tile['pos'][0] * self.tile_size  - offset[0], tile['pos'][1] * self.tile_size - offset[1], self.tile_size, self.tile_size), 1)
+                    pygame.draw.rect(surf, (255, 0, 0), (tile['pos'][0] * self.tile_size  - offset[0], tile['pos'][1] * self.tile_size - offset[1], self.tile_size, self.tile_size), 1)
