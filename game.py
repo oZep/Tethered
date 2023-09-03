@@ -133,7 +133,6 @@ class Game:
         self.music = 1
 
 
-
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
 
