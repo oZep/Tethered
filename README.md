@@ -11,7 +11,7 @@ I only started learning pygame 1 week ago from the start date of the jam, so it'
 >
 >.............
 >
->Jeez... mouse experiments just get weirder and weirder.
+>Jeez... mouse experiments are getting weirder and weirder.
 >
 >You said you wanted to test their intelligence? Huh, okay, sure. I'll just write that down and hope the board approves.
 >
