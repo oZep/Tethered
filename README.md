@@ -22,5 +22,5 @@ I only started learning pygame 1 week ago from the start date of the jam, so it'
 
 
 ## Links
-https://zepry.itch.io/tethered
+https://zepry.itch.io/mouse-disconnected
 
