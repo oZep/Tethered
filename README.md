@@ -1,7 +1,6 @@
 # Tethered
 YUdum Dare 4 Jam Submission, Theme 'Tethered'
 August 28th 2023 at 12:00 PM to September 3rd 2023 at 11:59 PM
-I only started learning pygame 1 week ago from the start date of the jam, so it's a nice challenge to use it for a game jam
 
 ## Description
 
@@ -11,7 +10,7 @@ I only started learning pygame 1 week ago from the start date of the jam, so it'
 >
 >.............
 >
->Jeez... mouse experiments just get weirder and weirder.
+>Jeez... mouse experiments are getting weirder and weirder.
 >
 >You said you wanted to test their intelligence? Huh, okay, sure. I'll just write that down and hope the board approves.
 >
@@ -22,5 +21,5 @@ I only started learning pygame 1 week ago from the start date of the jam, so it'
 
 
 ## Links
-https://zepry.itch.io/tethered
+https://zepry.itch.io/mouse-disconnected
 
