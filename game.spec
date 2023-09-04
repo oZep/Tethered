@@ -8,7 +8,7 @@ a = Analysis(
     ['game.py'],
     pathex=[],
     binaries=[],
-    datas=[("data", "data")],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
