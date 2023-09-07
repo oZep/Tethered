@@ -17,8 +17,7 @@ August 28th 2023 at 12:00 PM to September 3rd 2023 at 11:59 PM
 >Oh? It's already in motion. Great. Well, I guess I can't stop you. Be sure to watch them closely, as much as I don't like you I don't want boss to fire you. Imagine running this place all on my own? I would go completely insane.
 
 ## Gameplay
-
-
+https://www.youtube.com/watch?v=4dghJKWAbAo
 
 ## Links
 https://zepry.itch.io/mouse-disconnected
