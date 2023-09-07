@@ -126,7 +126,7 @@ class Game:
         # screen shake
         self.screenshake = 0
 
-        self.story_timer = 0 #500
+        self.story_timer = 500
         self.bad_ending = 1000
         self.win_delay = 100
 
